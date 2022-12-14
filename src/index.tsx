@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom'
-import { router } from './screens/Router';
+import { ThemeProvider } from 'styled-components';
+import { router } from './router/Router';
+
+const darkMode = {
+  bgColor: "#2c3e50",
+	textColor: "#ecf0f1",
+  eColor: "#f39c12",
+  iTextColor: "#2c3e50"
+}
 
 
 
@@ -10,7 +18,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router= {router} />
+    <ThemeProvider theme={darkMode}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
