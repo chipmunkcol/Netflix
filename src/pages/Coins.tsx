@@ -3,33 +3,37 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
 function Coins(){
-    const navigate = useNavigate()
 
-    interface CoinsType {
-            id: string,
-            name: string,
-            symbol: string,
-            rank: number,
-            is_new: boolean,
-            is_active: boolean,
-            type: string
-        }
-    const[coins, setCoins] = useState<CoinsType[]>([])
-    
-    async function fetchAPI(){
-       const res = await (await fetch('https://api.coinpaprika.com/v1/coins')).json()
-       setCoins(res.splice(0,100))
-       console.log(res)
+const navigate = useNavigate()
+
+interface CoinsType {
+        id: string,
+        name: string,
+        symbol: string,
+        rank: number,
+        is_new: boolean,
+        is_active: boolean,
+        type: string
     }
-    useEffect(()=>{
-        fetchAPI()
-    },[])
+const[coins, setCoins] = useState<CoinsType[]>([])
+
+async function fetchCoins(){
+    const res = await (await fetch('https://api.coinpaprika.com/v1/coins')).json()
+    setCoins(res.splice(0,100))
+    console.log(res[0].symbol)
+}
+useEffect(()=>{
+    fetchCoins()
+},[])
+
+
     return(
         <Wrap>
             <Title>Coins</Title>
             <Container>
                 {coins.map((coin)=> 
-                <Coin onClick={()=>{navigate(`${coin.rank}`,{state: coins})}}>
+                <Coin onClick={()=>{navigate(`${coin.id}`,{state: coin})}} key={coin.id}>
+                    <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>
                     {coin.name} &rarr;
                 </Coin>)}
             </Container>
@@ -54,13 +58,16 @@ const Title = styled.div`
     color: ${props => props.theme.eColor}
 `
 const Container = styled.div`
+
 `
 
 const Coin = styled.div`
-    width: 10rem;
-    height: 2rem;
+    width: 16rem;
+    height: 3rem;
     margin: 1rem 0 0 0;
     border-radius: 0.3rem;
+    display: flex;
+    align-items: center;
 
     background-color: ${props => props.theme.textColor};
     color: ${props => props.theme.iTextColor};
@@ -70,3 +77,8 @@ const Coin = styled.div`
     cursor: pointer;
 `
 
+const Img = styled.img`
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0 0.5rem;
+`

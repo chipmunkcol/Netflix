@@ -6,12 +6,11 @@ import { router } from './router/Router';
 
 const darkMode = {
   bgColor: "#2c3e50",
+  iBgColor: "#111",
 	textColor: "#ecf0f1",
   eColor: "#f39c12",
   iTextColor: "#2c3e50"
 }
-
-
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
