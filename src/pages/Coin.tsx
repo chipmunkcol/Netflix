@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCoinData, fetchCoinPrice } from '../api/api';
 
 function Coin(){
 
@@ -64,28 +66,13 @@ interface IcoinData {
 
 const { state } = useLocation()
 const coin = state;
-const coinId = useParams().coinId
 
-const [coinData, setCoinData] = useState<IcoinData>()
+const { coinId } = useParams()
 
-async function fetchCoinData(){
-    const res = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json()
-    setCoinData(res)
-}
+const { data : coinData } = useQuery<IcoinData>([coinId, "data"], () => fetchCoinData(coinId))
+const { data : coinPrice } = useQuery<IcoinPrice>([coinId, "price"], () => fetchCoinPrice(coinId))
 
-const [coinPrice, setCoinPrice] = useState<IcoinPrice>()
 
-async function fetchCoinPrice(){
-    const res = await (await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)).json()
-    setCoinPrice(res)
-}
-
-useEffect(()=>{
-    fetchCoinPrice();
-    fetchCoinData();
-},[])
-
-    // useRouteMatch() hook 사용으로 price와 chart에 반응형 css를 설정한다.
 const navigate = useNavigate()
 const ChartMatch = useMatch('/:coinId/chart')
 const PriceMatch = useMatch('/:coidId/price')
@@ -130,7 +117,7 @@ const PriceMatch = useMatch('/:coidId/price')
                 isActive={PriceMatch !== null}>PRICE</PriceBtn>
         </BtnBox>
         
-        <Outlet />
+        <Outlet context={coinId}/>
         
     </Wrap>
     )
@@ -221,7 +208,7 @@ const BtnBox = styled.div`
         border-radius: 0.3rem;
         align-items: center;
         display: flex;
-        justify-content: center;
+        justify-content: center; 
         cursor: pointer;
 
         background-color: ${props => props.theme.iBgColor};

@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query"
+import { fetchCoins } from "../api/api";
 
 function Coins(){
 
@@ -15,23 +17,15 @@ interface CoinsType {
         is_active: boolean,
         type: string
     }
-const[coins, setCoins] = useState<CoinsType[]>([])
 
-async function fetchCoins(){
-    const res = await (await fetch('https://api.coinpaprika.com/v1/coins')).json()
-    setCoins(res.splice(0,100))
-    console.log(res[0].symbol)
-}
-useEffect(()=>{
-    fetchCoins()
-},[])
-
+const { data : coins } = useQuery<CoinsType[]>(["coins"], fetchCoins)
+console.log('coins: ', coins);
 
     return(
         <Wrap>
             <Title>Coins</Title>
             <Container>
-                {coins.map((coin)=> 
+                {coins?.splice(0,100).map(coin=> 
                 <Coin onClick={()=>{navigate(`${coin.id}`,{state: coin})}} key={coin.id}>
                     <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>
                     {coin.name} &rarr;

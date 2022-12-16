@@ -56,3 +56,8 @@ React에 TypeScript, Recoil, React Query를 한 움큼씩 넣어보자🎨
             const {userName} = useOutletContext<UserNameType>();
 
 ## 4. 
+
+react_query가 자꾸 api 첫번째 배열부터 안가져오고 밀려서 꽤 뒤에꺼부터 가져오길래 이것저것 만져봤는데 strict 모드 때문에 그런거 같다 조심하자!
+
+data?.map((price) => Number(price.close)) as number[]
+number[]로 return 해줘야되는데 string|undefined 여서 => as number[]로 강제해서 해결했음... 간단한건데 몇시간을 막힌거지..?  
