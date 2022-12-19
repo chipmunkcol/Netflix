@@ -7,5 +7,6 @@ declare module "styled-components" {
         textColor: string;
         eColor: string;
         iTextColor: string;
+        descColor: string;
     }
 }

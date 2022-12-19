@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query"
 import { fetchCoins } from "../api/api";
+import { recoilDarkMode } from "../states/recoilTheme";
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import Loading from "./Loading";
 
 function Coins(){
 
@@ -18,14 +21,29 @@ interface CoinsType {
         type: string
     }
 
-const { data : coins } = useQuery<CoinsType[]>(["coins"], fetchCoins)
-console.log('coins: ', coins);
+const { data , isLoading } = useQuery<CoinsType[]>(["allCoins"], fetchCoins, {notifyOnChangeProps:['data']})
+console.log(isLoading);
 
+const isDark = useRecoilValue(recoilDarkMode)
+const setIsDark = useSetRecoilState(recoilDarkMode)
+const toggleDarkMode = () => { setIsDark(prev => !prev) } 
+
+// if(isLoading){
+//   return <Loading />
+// }
+if(!data){
+    return <div>error</div>
+} 
     return(
         <Wrap>
-            <Title>Coins</Title>
+            <Title>Coins
+                <Button 
+                isDark={isDark}
+                onClick={toggleDarkMode}
+                >Dark Mode</Button>
+            </Title>
             <Container>
-                {coins?.splice(0,100).map(coin=> 
+                {data?.splice(0,100).map(coin=> 
                 <Coin onClick={()=>{navigate(`${coin.id}`,{state: coin})}} key={coin.id}>
                     <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>
                     {coin.name} &rarr;
@@ -51,6 +69,15 @@ const Title = styled.div`
     font-size: 2rem;
     color: ${props => props.theme.eColor}
 `
+
+const Button = styled.button<{isDark:boolean}>`
+border: none;
+border-radius: 0.3rem;
+
+color: ${props => props.isDark ? "#2c3e50" : "white"};
+background-color: ${props => props.isDark ? "white" :"#2c3e50"};
+`
+
 const Container = styled.div`
 
 `

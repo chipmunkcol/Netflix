@@ -169,6 +169,7 @@ const Desc = styled.div`
     width: 27rem;
     margin-top: 1rem;
     font-size: 1rem;
+    color: ${props => props.theme.descColor};
 `
 const ContentBox = styled.div`
     width: 27rem;
