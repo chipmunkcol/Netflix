@@ -1,30 +1,24 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { atom } from "recoil"
+import { categoryTodo, Itodo, todoState } from "../states/todoState";
+import Todo from "./Todo";
 
 
 
 function TodoList(){
 
-interface Itodo {
-    text: string;
-    category: "DONE" | "TO_DO"
-}
-const todoState = atom<Itodo[]>({
-    key: 'todoState',
-    default: []
-})
-
-
-const [todoList, setTodoList] = useRecoilState(todoState)
-console.log('todoList: ', todoList);
+const setTodoList = useSetRecoilState(todoState)
+const [TODO, DONE] = useRecoilValue(categoryTodo)
+console.log('TODO, DONE: ', TODO, DONE);
 
 const { register, handleSubmit, setValue } = useForm<{todo : string}>()
 
 const onSubmit = (data: {todo: string}) => {
     setTodoList((prev) => [...prev, {
+        id: Date.now(),
         text: data.todo,
         category: "TO_DO"
     }])
@@ -37,7 +31,10 @@ const onSubmit = (data: {todo: string}) => {
                 <input {...register("todo")}/>
                 <button>submit</button>
             </form>
-            {todoList.map( todo => <div>{todo.text}</div> )}
+            
+            {TODO.map(todo => <Todo key={todo.id} {...todo}/>)}
+            {DONE.map(todo => <Todo key={todo.id} {...todo}/>)}
+
         </Wrap>
     )
 }
