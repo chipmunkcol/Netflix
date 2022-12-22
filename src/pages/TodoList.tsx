@@ -1,39 +1,29 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
-import { atom } from "recoil"
-import { categoryTodo, Itodo, todoState } from "../states/todoState";
+import { Category, categoryState, categoryTodo } from "../states/todoState";
 import Todo from "./Todo";
-
+import CreateTodo from "./CreateTodo";
+import { useState } from "react";
 
 
 function TodoList(){
 
-const setTodoList = useSetRecoilState(todoState)
-const [TODO, DONE] = useRecoilValue(categoryTodo)
-console.log('TODO, DONE: ', TODO, DONE);
+const TODO = useRecoilValue(categoryTodo)
+const [category, setCategory] = useRecoilState(categoryState)
 
-const { register, handleSubmit, setValue } = useForm<{todo : string}>()
-
-const onSubmit = (data: {todo: string}) => {
-    setTodoList((prev) => [...prev, {
-        id: Date.now(),
-        text: data.todo,
-        category: "TO_DO"
-    }])
-    setValue('todo',"")
-}
-
-    return(
+return(
         <Wrap>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("todo")}/>
-                <button>submit</button>
-            </form>
+            <select 
+            onChange={(e)=>setCategory(e.target.value)}
+            >
+                <option defaultValue={Category.TO_DO}>TO_DO</option>
+                <option value={Category.DONE}>DONE</option>
+            </select>
+
+
+            <CreateTodo category={category}/>
             
-            {TODO.map(todo => <Todo key={todo.id} {...todo}/>)}
-            {DONE.map(todo => <Todo key={todo.id} {...todo}/>)}
+            {TODO?.map(todo => <Todo key={todo.id} {...todo}/>)}
 
         </Wrap>
     )
