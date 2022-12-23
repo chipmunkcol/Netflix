@@ -61,3 +61,5 @@ react_query가 자꾸 api 첫번째 배열부터 안가져오고 밀려서 꽤 �
 
 data?.map((price) => Number(price.close)) as number[]
 number[]로 return 해줘야되는데 string|undefined 여서 => as number[]로 강제해서 해결했음... 간단한건데 몇시간을 막힌거지..?  
+
+<ThemeProvider theme={theme}>으로 전역 styled 제어 해줄 때 styled.d.ts 로 선언해줘야 되는데 이때 파일명 styled.d.ts로 고정임 다른 이름안됨 

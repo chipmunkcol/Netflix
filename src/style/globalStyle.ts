@@ -44,9 +44,8 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
-  body{
-    font-family: 'Source Sans Pro', sans-serif;
-  }
+body {
+	background-color: ${props => props.theme.black.lighter};
+	color: ${props => props.theme.white.lighter};
+}
 `
