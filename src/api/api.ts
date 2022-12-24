@@ -6,8 +6,8 @@ export function getMovies() {
             .then((res) => res.json())
 }
 
-export function getPosterImg(poster_path : string) {
-    return `https://image.tmdb.org/t/p/original${poster_path}`
+export function getPosterImg(poster_path: string, size?: string ) {
+    return `https://image.tmdb.org/t/p/${size?size:"original"}${poster_path}`
 }
 
 

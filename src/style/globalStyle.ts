@@ -45,7 +45,7 @@ table {
 	border-spacing: 0;
 }
 body {
-	background-color: ${props => props.theme.black.lighter};
+	background-color: ${props => props.theme.black.deepDark};
 	color: ${props => props.theme.white.lighter};
 }
 `

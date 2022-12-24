@@ -20,7 +20,7 @@ function Header(){
 const Wrap = styled.div`
 display: flex;
 position: absolute;
-width: 100vw;
+width: 100%;
 height: 68px;
 /* background-color: rgba(0, 0, 0, 0.5); */
 background-color: transparent;
