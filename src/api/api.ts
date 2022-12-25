@@ -12,7 +12,7 @@ export function getPosterImg(poster_path: string, size?: string ) {
 
 
 
-interface Iresults {
+export interface Iresults {
 "backdrop_path": string;
 "id": number;
 "overview": string;
