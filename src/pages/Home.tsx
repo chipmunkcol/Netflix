@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { getMovies, getPosterImg, Idata } from "../api/api";
+import { getMovies, getPosterImg, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
 
 function Home () {
@@ -38,11 +38,15 @@ useEffect(()=>{
 },[page])
 
 // Modal 구현
+const [clickMovie, setClickMovie] = useState<Iresults>()
+// console.log('clickMovie: ', clickMovie);
 const [modal, setModal] = useState(false)
-const onclickModal = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
+const onclickModal = () => {
     setModal(prev => !prev);
 }
+
+
+
 if(isLoading) {
     return <>Loading</>
 }
@@ -57,7 +61,7 @@ if(isLoading) {
                         <Poster 
                         bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
                         key={movie.id}
-                        onClick={onclickModal}
+                        onClick={()=>{onclickModal(); setClickMovie(movie)}}
                         >
                             <PosterTitle>{movie.title}</PosterTitle>
                         </Poster>)}
@@ -66,7 +70,7 @@ if(isLoading) {
                 <ButtonL className="button" onClick={onclickPrev}>{"<"}</ButtonL>
             </Banner>
 
-            {modal && <Detail onclickModal={onclickModal}/>}
+            {modal && <Detail clickMovie={clickMovie} onclickModal={onclickModal}/>}
 
         </Wrap>
     )

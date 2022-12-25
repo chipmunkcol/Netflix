@@ -1,15 +1,18 @@
 import styled from "styled-components";
-import { Idata, Iresults } from "../api/api";type onclickModal = () => {}
+import { useRef, useEffect } from "react"
+import { Idata, Iresults } from "../api/api";
 
-type typeModal = {
-    onclickModal: (e: React.MouseEvent<HTMLElement>) => void
+export interface IModal {
+    clickMovie: Iresults | undefined;
+    onclickModal: () => void;
 }
 
-function Detail({onclickModal} :typeModal){
+const Detail: React.FunctionComponent<IModal> = ({clickMovie, onclickModal}) => {
 
+console.log(clickMovie)
     return(
         <Wrap onClick={onclickModal}>
-            <Modal>
+            <Modal onClick={(e)=>e.stopPropagation()}>
                 {/* {movie[0].title} */}
             </Modal>
         </Wrap>
@@ -29,10 +32,10 @@ background-color: rgba(0,0,0, 0.7);
 `
 const Modal = styled.div`
 width: 850px;
-height: 200vh;
-position: relative;
+height: 80vh;
 top: 10%;
-background-color: tomato;
+position: fixed;
+background-color: whitesmoke;
 `
 
 export default Detail;
