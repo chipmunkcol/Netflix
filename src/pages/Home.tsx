@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { getMovies, getPosterImg, Idata, Iresults } from "../api/api";
+import { getGenre, getMovies, getPosterImg, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
+import IconAdult from "../Image/adult.png"
+import IconTeenager from "../Image/teenager.png"
+import { useNavigate } from "react-router-dom";
 
 function Home () {
     
 const { data, isLoading } = useQuery<Idata>(["now_playing"], getMovies)
 console.log('data: ', data);
-
 
 // slider 구현(바닐라JS)
 const [page, setPage] = useState(0)
@@ -41,8 +43,14 @@ useEffect(()=>{
 const [clickMovie, setClickMovie] = useState<Iresults>()
 // console.log('clickMovie: ', clickMovie);
 const [modal, setModal] = useState(false)
-const onclickModal = () => {
+const navigate = useNavigate()
+const openModal = (movieId:number) => {
+    setModal(true)
+    navigate(`movie/${movieId}`)
+}
+const closeModal = () => {
     setModal(prev => !prev);
+    navigate("")
 }
 
 
@@ -58,19 +66,44 @@ if(isLoading) {
                 
                 <Slider ref={slideRef}>
                     {data?.results.map(movie => 
-                        <Poster 
-                        bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
-                        key={movie.id}
-                        onClick={()=>{onclickModal(); setClickMovie(movie)}}
-                        >
+                        <Poster key={movie.id}>
+                            <PosterImg 
+                            bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
+                            onClick={()=>{openModal(movie.id); setClickMovie(movie);}}
+                            />
                             <PosterTitle>{movie.title}</PosterTitle>
-                        </Poster>)}
+                            
+                            <OpacityBox>
+                                <FlexBox>
+                                    <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
+                                    <PosterVote>평점 {movie.vote_average}점</PosterVote>
+                                </FlexBox>
+                                <PosterGenre>
+                                    {movie.genre_ids.map((genre, i) => {
+                                            if(getGenre.findIndex((v) => v.id === genre) && i < 3){
+                                                return (<div key={Math.random()}>
+                                                            {getGenre[getGenre.findIndex((v) => v.id === genre)].name} 
+                                                            <span>&#183;</span>
+                                                        </div>)
+                                            } 
+                                        })
+                                    }
+                                </PosterGenre>
+                            </OpacityBox>
+                        </Poster>
+                    )}
                 </Slider>
-                <ButtonR className="button" onClick={onclickNext}>{">"}</ButtonR>
-                <ButtonL className="button" onClick={onclickPrev}>{"<"}</ButtonL>
+
+                <ButtonAreaL>
+                    <ButtonL className="button" onClick={onclickPrev}>{"<"}</ButtonL>
+                </ButtonAreaL>
+                <ButtonAreaR>
+                    <ButtonR className="button" onClick={onclickNext}>{">"}</ButtonR>
+                </ButtonAreaR>
+
             </Banner>
 
-            {modal && <Detail clickMovie={clickMovie} onclickModal={onclickModal}/>}
+            {modal && <Detail clickMovie={clickMovie} closeModal={closeModal}/>}
 
         </Wrap>
     )
@@ -88,7 +121,6 @@ background-size: cover;
 display: flex;
 flex-direction: column;
 justify-content: center;
-padding: 20px;
 gap: 20px;
 `
 const Title = styled.div`
@@ -101,43 +133,99 @@ margin-left: 24px;
 `
 const Slider = styled.div`
 position: relative;
-top: 30%;
-width: 97%;
+top: 38%;
+width: 100%;
 margin: 0 auto;
 display: flex;
 &:hover {
-    .button {
+    button {
         opacity:1
     }
 }
 `
-const Poster = styled.div<{bgImage : string}>`
-width: 230px;
-height: 200px;
-margin-right: 10px;
-flex: none;
-background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1)), 
-url(${props=>props.bgImage});
-background-position: 50% 50%;
-background-size: contain;
-background-repeat: no-repeat;
+const Poster = styled.div`
+width: 253px;
+height: 171px;
+background-color: ${props=>props.theme.black.darker};
 &:hover {
     transition-duration: 1s;
     transition-delay: 0.5s;
     transform: scale(1.3);
+    z-index: 5;
+    ul {
+        opacity: 1;
+        transition-duration: 1s;
+        transition-delay: 0.5s;
+    }
 }
+`
+const PosterImg = styled.div<{bgImage : string}>`
+width: 253px;
+height: 155px;
+margin-right: 10px;
+flex: none;
+background-image: url(${props=>props.bgImage});
+background-position: top;
+background-size: contain;
+background-repeat: no-repeat;
 ` 
 const PosterTitle = styled.div`
+position: relative;
+top: -10px;
+left: 9px;
 `
-const ButtonL = styled.button`
+const OpacityBox = styled.ul`
+opacity: 0;
+width: 100%;
+height: 70px;
+background-color: ${props=>props.theme.black.darker};
+`
+const FlexBox = styled.div`
+display: flex;
+padding-top: 10px;
+`
+const PosterAdult = styled.li<{ bgImg:string }>`
+margin: 0 20px 0 10px;
+background-image: url(${props=>props.bgImg});
+background-position: center;
+background-size: cover;
+width: 20px;
+height: 20px;
+`
+const PosterVote = styled.li``
+const PosterGenre = styled.li`
+display: flex;
+margin: 10px 0 0 10px;
+font-size: 14px;
+div {
+    /* margin-right: 5px; */
+}
+span {
+    margin: 0 5px 0 5px;
+    font-weight: 800;
+}
+`
+const ButtonAreaL = styled.div`
+position: absolute;
+top: 86.7%;
+width: 50px;
+height: 170px;
+background-color: rgba(0,0,0,0.8);
+display: flex;
+justify-content: center;
+opacity: 1;
+`
+const ButtonAreaR = styled(ButtonAreaL)`
+right: 0;
+`
+const ButtonL = styled.span`
 font-weight: 800;
 font-size: 36px;
 position: absolute;
 z-index: 999;
-top: 91%;
+top: 40%;
 opacity: 1;
 `
 const ButtonR = styled(ButtonL)`
-right: 25px;
 `
 export default Home;
