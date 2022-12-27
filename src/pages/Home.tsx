@@ -5,14 +5,14 @@ import { getGenre, getMovies, getPosterImg, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
 import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 
 function Home () {
     
 const { data, isLoading } = useQuery<Idata>(["now_playing"], getMovies)
 console.log('data: ', data);
 
-// slider 구현(바닐라JS)
+// slider 구현(라이브러리x)
 const [page, setPage] = useState(0)
 const slideRef = useRef<any>(null);
 
@@ -43,9 +43,11 @@ useEffect(()=>{
 const [clickMovie, setClickMovie] = useState<Iresults>()
 // console.log('clickMovie: ', clickMovie);
 const [modal, setModal] = useState(false)
+const url = useMatch('movie/:movieId')
+// console.log('url: ', url);
 const navigate = useNavigate()
 const openModal = (movieId:number) => {
-    setModal(true)
+    // setModal(true)
     navigate(`movie/${movieId}`)
 }
 const closeModal = () => {
@@ -80,10 +82,10 @@ if(isLoading) {
                                 </FlexBox>
                                 <PosterGenre>
                                     {movie.genre_ids.map((genre, i) => {
-                                            if(getGenre.findIndex((v) => v.id === genre) && i < 3){
+                                            if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
                                                 return (<div key={Math.random()}>
                                                             {getGenre[getGenre.findIndex((v) => v.id === genre)].name} 
-                                                            <span>&#183;</span>
+                                                            {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
                                                         </div>)
                                             } 
                                         })
@@ -103,7 +105,7 @@ if(isLoading) {
 
             </Banner>
 
-            {modal && <Detail clickMovie={clickMovie} closeModal={closeModal}/>}
+            {url && <Detail clickMovie={clickMovie} />}
 
         </Wrap>
     )
