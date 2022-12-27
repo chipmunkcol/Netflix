@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 function Header(){
+
+// 스크롤 시 헤더 색 변경
+const [scrollY, setScrollY] = useState(0)
+// console.log('scrollY: ', scrollY);
+
+const listenScroll = () => {
+    if(window.scrollY < 300) {setScrollY(window.scrollY)}
+}
+useEffect(()=>{
+    window.addEventListener("scroll", listenScroll)
+},[scrollY])
+
     return(
-        <Wrap>
+        <Wrap scrollY={scrollY}>
             <Logo src='https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg'/>
             <Nav>
                 <li>홈</li>
@@ -17,13 +30,15 @@ function Header(){
     )
 }
 
-const Wrap = styled.div`
+const Wrap = styled.div<{scrollY:number}>`
 display: flex;
-position: absolute;
+position: fixed;
+z-index: 999;
 width: 100%;
 height: 68px;
 /* background-color: rgba(0, 0, 0, 0.5); */
-background-color: transparent;
+background-color: ${props => props.scrollY > 180 ? props.theme.black.darker : "transparent"};
+transition: background-color 1s;
 `
 const Logo = styled.img`
 width: 100px;
