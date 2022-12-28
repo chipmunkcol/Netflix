@@ -130,6 +130,8 @@ const Runtime = styled.div`
 const Release = styled.div``
 const Overlay = styled.div`
 width: 92%;
+height: 112px;
+overflow: hidden;
 display: flex;
 justify-content: center;
 margin: 16px auto 0 auto;

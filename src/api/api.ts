@@ -14,6 +14,16 @@ export function getPosterImg(poster_path: string, size?: string ) {
     return `https://image.tmdb.org/t/p/${size?size:"original"}${poster_path}`
 }
 
+export function searchMovie(search:string) {
+    return fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}`)
+            .then((res) => res.json())
+}
+
+export function getPopularMovie(){
+    return fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko&page=2`)
+            .then((res) => res.json())
+}
+
 export const getGenre = [
     {
     "id": 28,
