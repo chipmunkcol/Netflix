@@ -34,7 +34,7 @@ const openModal = (movieId:number) => {
 }
 
     return(
-        <SliderMain ref={slideRef}>
+        <SliderMain ref={slideRef} number={number}>
             {data?.results.map(movie => 
                 <Poster key={movie.id}>
                     <PosterImg 
@@ -67,9 +67,9 @@ const openModal = (movieId:number) => {
     )
 }
 
-export const SliderMain = styled.div`
-position: relative;
-top: 38%;
+export const SliderMain = styled.div<{number: number}>`
+position: absolute;
+top: ${props=>props.number === 1 ? "87%" : props.number === 2? "129%" : "169%" };
 width: 100%;
 margin: 0 auto;
 display: flex;
@@ -83,11 +83,10 @@ export const Poster = styled.div`
 width: 253px;
 height: 171px;
 background-color: ${props=>props.theme.black.darker};
-border-radius: 10px;
 &:hover {
     transition-duration: 1s;
     transition-delay: 0.5s;
-    transform: scale(1.3);
+    transform: scale(1.2);
     z-index: 5;
     ul {
         opacity: 1;
@@ -114,12 +113,12 @@ left: 9px;
 export const OpacityBox = styled.ul`
 opacity: 0;
 width: 100%;
-height: 70px;
+height: 50px;
 background-color: ${props=>props.theme.black.darker};
 `
 export const FlexBox = styled.div`
 display: flex;
-padding-top: 10px;
+padding-top: 2px;
 `
 export const PosterAdult = styled.li<{ bgImg:string }>`
 margin: 0 20px 0 10px;
@@ -141,7 +140,7 @@ cursor: pointer;
 `
 export const PosterGenre = styled.li`
 display: flex;
-margin: 10px 0 0 10px;
+margin: 7px 0 0 10px;
 font-size: 14px;
 div {
     /* margin-right: 5px; */

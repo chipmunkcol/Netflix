@@ -24,6 +24,11 @@ export function getPopularMovie(){
             .then((res) => res.json())
 }
 
+export function getTopMovie(){
+    return fetch(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=ko&page=1`)
+            .then((res) => res.json())
+}
+
 export const getGenre = [
     {
     "id": 28,
