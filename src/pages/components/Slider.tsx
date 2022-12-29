@@ -6,18 +6,34 @@ import { getGenre } from "../../api/api";
 import IconAdult from "../../Image/adult.png"
 import IconTeenager from "../../Image/teenager.png"
 import IconLike from "../../Image/즐겨찾기전.png"
+import SliderBtn from "./SliderBtn";
 
 interface ISlider {
     data?: Idata;
-    setClickMovie: React.Dispatch<React.SetStateAction<Iresults | undefined>> ;
-    page: number;
+    setClickMovie: React.Dispatch<React.SetStateAction<Iresults | undefined>>;
     number: number;
 }
 
-function Slider ({data, setClickMovie, page, number}: ISlider){
+function Slider ({data, setClickMovie, number}: ISlider){
 
-// slider 구현(라이브러리x)
-const slideRef = useRef<any>(null);
+// slider ref로 구현
+const slideRef = useRef<any>(null)
+
+const [page, setPage] = useState(0)
+const onclickNext = () => {
+    if(page > 1) {
+        setPage(0)
+    } else {
+        setPage(prev => prev + 1)
+    }
+}
+const onclickPrev = () => {
+    if(page === 0) {
+        setPage(prev => prev + 2)
+    } else {
+        setPage(prev => prev - 1)
+    }
+}
 
 useEffect(()=>{
     setTimeout(() => {
@@ -34,7 +50,8 @@ const openModal = (movieId:number) => {
 }
 
     return(
-        <SliderMain ref={slideRef} number={number}>
+        <Wrap number={number}>
+        <SliderMain ref={slideRef} >
             {data?.results.map(movie => 
                 <Poster key={movie.id}>
                     <PosterImg 
@@ -64,20 +81,31 @@ const openModal = (movieId:number) => {
                 </Poster>
             )}
         </SliderMain>
+
+        <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev}/>
+
+        </Wrap>
     )
 }
 
-export const SliderMain = styled.div<{number: number}>`
+const Wrap = styled.div<{number: number}>` // 슬라이더 number에 따라 css 위치 조정
 position: absolute;
 top: ${props=>props.number === 1 ? "87%" : props.number === 2? "129%" : "169%" };
 width: 100%;
+height: 250px;
 margin: 0 auto;
-display: flex;
+overflow: hidden;
 &:hover {
-    button {     // 이거 버튼area 호버 어떻게하냐~
-        opacity:1
+    li {
+        opacity: 1;
     }
 }
+`
+
+export const SliderMain = styled.div`
+position: relative;
+width: 100%;
+display: flex;
 `
 export const Poster = styled.div`
 width: 253px;
@@ -120,7 +148,7 @@ export const FlexBox = styled.div`
 display: flex;
 padding-top: 2px;
 `
-export const PosterAdult = styled.li<{ bgImg:string }>`
+export const PosterAdult = styled.div<{ bgImg:string }>`
 margin: 0 20px 0 10px;
 background-image: url(${props=>props.bgImg});
 background-position: center;
@@ -128,8 +156,8 @@ background-size: cover;
 width: 20px;
 height: 20px;
 `
-export const PosterVote = styled.li``
-export const Like = styled.li<{IconLike:string}>`
+export const PosterVote = styled.div``
+export const Like = styled.div<{IconLike:string}>`
 background-image: url(${props=>props.IconLike});
 background-position: center;
 background-size: cover;
@@ -138,13 +166,10 @@ height: 17px;
 margin-left: 15px;
 cursor: pointer;
 `
-export const PosterGenre = styled.li`
+export const PosterGenre = styled.div`
 display: flex;
 margin: 7px 0 0 10px;
 font-size: 14px;
-div {
-    /* margin-right: 5px; */
-}
 span {
     margin: 0 5px 0 5px;
     font-weight: 800;

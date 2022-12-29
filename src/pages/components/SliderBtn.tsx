@@ -3,31 +3,30 @@ import styled from "styled-components"
 interface ISlderBtn{
     onclickPrev: ()=>void;
     onclickNext: ()=>void;
-    number: number;
 }
 
-function SliderBtn ({onclickPrev, onclickNext, number}:ISlderBtn) {
+function SliderBtn ({onclickPrev, onclickNext}:ISlderBtn) {
     return(
         <>
-        <ButtonAreaL number={number} onClick={onclickPrev}>
+        <ButtonAreaL onClick={onclickPrev}>
             <ButtonL className="button" >{"<"}</ButtonL>
         </ButtonAreaL>
-        <ButtonAreaR number={number} onClick={onclickNext}>
+        <ButtonAreaR onClick={onclickNext}>
             <ButtonR className="button" >{">"}</ButtonR>
         </ButtonAreaR>
         </>
     )
 }
 
-const ButtonAreaL = styled.div<{number:number}>`
+const ButtonAreaL = styled.li`
 position: absolute;
-top: ${props=>props.number === 1 ? "86.7%" : props.number === 2 ? "128.7%" : "167.7%"};
+top: 0%;
 width: 50px;
 height: 170px;
 background-color: rgba(0,0,0,0.8);
 display: flex;
 justify-content: center;
-opacity: 1;
+opacity: 0;
 cursor: pointer;
 `
 const ButtonAreaR = styled(ButtonAreaL)`

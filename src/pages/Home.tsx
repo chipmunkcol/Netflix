@@ -5,7 +5,6 @@ import { getMovies, getPopularMovie, getPosterImg, getTopMovie, Idata, Iresults 
 import Detail from "./Detail";
 import Slider from "./components/Slider";
 import { useMatch } from "react-router-dom";
-import SliderBtn from "./components/SliderBtn";
 
 function Home () {
     
@@ -20,53 +19,6 @@ const [clickMovie, setClickMovie] = useState<Iresults>()
 const movieId = useMatch('movie/:movieId')
 
 
-const [page, setPage] = useState(0)
-const [page2, setPage2] = useState(0)
-const [page3, setPage3] = useState(0)
-
-const onclickNext = () => {
-    if(page > 1) {
-        setPage(0)
-    } else {
-        setPage(prev => prev + 1)
-    }
-}
-const onclickPrev = () => {
-    if(page === 0) {
-        setPage(prev => prev + 2)
-    } else {
-        setPage(prev => prev - 1)
-    }
-}
-const onclickNext2 = () => {
-    if(page2 > 1) {
-        setPage2(0)
-    } else {
-        setPage2(prev => prev + 1)
-    }
-}
-const onclickPrev2 = () => {
-    if(page2 === 0) {
-        setPage2(prev => prev + 2)
-    } else {
-        setPage2(prev => prev - 1)
-    }
-}
-const onclickNext3 = () => {
-    if(page3 > 1) {
-        setPage3(0)
-    } else {
-        setPage3(prev => prev + 1)
-    }
-}
-const onclickPrev3 = () => {
-    if(page3 === 0) {
-        setPage3(prev => prev + 2)
-    } else {
-        setPage3(prev => prev - 1)
-    }
-}
-
 if(isLoading) {
     return <>Loading</>
 }
@@ -77,22 +29,19 @@ if(isLoading) {
                 <Overview>{data?.results[0].overview}</Overview>
                 
             <STitle>현재 상영중인 영화</STitle>
-            {/* 슬라이더 & 버튼 컴포넌트 */}
-                <Slider data={data} setClickMovie={setClickMovie} page={page} number={1}/>
-                <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev} number={1}/>
+            {/* 슬라이더 number로 position top 조절해줌 */}
+                <Slider data={data} setClickMovie={setClickMovie} number={1}/>
 
             </Banner>
             
             <STitle2>지금 뜨는 콘텐츠</STitle2>
-            {/* 슬라이더 & 버튼 컴포넌트(인기영화 ) */}
-                <Slider data={dataPupular} setClickMovie={setClickMovie} page={page2} number={2}/>
-                <SliderBtn onclickNext={onclickNext2} onclickPrev={onclickPrev2} number={2}/>
+            {/* 슬라이더(인기영화 ) */}
+                <Slider data={dataPupular} setClickMovie={setClickMovie} number={2}/>
 
 
             <STitle3>오늘 TOP 20 영화</STitle3>
-            {/* 슬라이더 & 버튼 컴포넌트(TOP 20 영화 ) */}
-                <Slider data={dataTop} setClickMovie={setClickMovie} page={page3} number={3}/>
-                <SliderBtn onclickNext={onclickNext3} onclickPrev={onclickPrev3} number={3}/>
+            {/* 슬라이더(TOP 20 영화 ) */}
+                <Slider data={dataTop} setClickMovie={setClickMovie} number={3}/>
 
             {/* 영화 Detail 컴포넌트(모달) */}
             {movieId && <Detail clickMovie={clickMovie} />}
@@ -102,7 +51,6 @@ if(isLoading) {
 }
 const Wrap =styled.div`
 height: 200vh;
-overflow: hidden;
 `
 const Banner = styled.div<{bgImage : string}>`
 height: 100vh;
