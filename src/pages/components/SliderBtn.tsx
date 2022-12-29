@@ -3,24 +3,25 @@ import styled from "styled-components"
 interface ISlderBtn{
     onclickPrev: ()=>void;
     onclickNext: ()=>void;
+    number?: number;
 }
 
-function SliderBtn ({onclickPrev, onclickNext}:ISlderBtn) {
+function SliderBtn ({onclickPrev, onclickNext, number}:ISlderBtn) {
     return(
         <>
-        <ButtonAreaL onClick={onclickPrev}>
+        <ButtonAreaL onClick={onclickPrev} number={number}>
             <ButtonL className="button" >{"<"}</ButtonL>
         </ButtonAreaL>
-        <ButtonAreaR onClick={onclickNext}>
+        <ButtonAreaR onClick={onclickNext} number={number}>
             <ButtonR className="button" >{">"}</ButtonR>
         </ButtonAreaR>
         </>
     )
 }
 
-const ButtonAreaL = styled.li`
+const ButtonAreaL = styled.li<{number?:number}>`
 position: absolute;
-top: 0%;
+top: ${props=>props.number === 3 ? "3%" : "23%"}; // top10 영화인 3번째 슬라이더
 width: 50px;
 height: 170px;
 background-color: rgba(0,0,0,0.8);

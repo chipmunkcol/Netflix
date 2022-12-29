@@ -1,12 +1,16 @@
 import { useMatch, useNavigate, useParams } from "react-router-dom"
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query";
 import { getGenre, getPosterImg, Idata, Iresults, searchMovie } from "../api/api";
 import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
+import IconLike from "../Image/즐겨찾기전.png"
+import IconLiked from "../Image/즐겨찾기후.png"
 import styled from "styled-components";
 import * as Styled from "./components/Slider"
 import Detail from "./Detail";
+import { useRecoilValue } from "recoil";
+import { likeState } from "../state/likeState";
 
 
 const Search = () => {
@@ -22,6 +26,8 @@ const navigate = useNavigate()
 const openModal = (movieId:number) => {
     navigate(`${movieId}`)
 }
+
+const likedArr = useRecoilValue(likeState)
 
 if(isLoading) {
     return <>Loading</>
@@ -40,6 +46,7 @@ if(isLoading) {
                     <Styled.FlexBox>
                         <Styled.PosterAdult bgImg={movie.adult ? IconAdult : IconTeenager} />
                         <Styled.PosterVote>평점 {movie.vote_average}점</Styled.PosterVote>
+                        <Styled.Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
                     </Styled.FlexBox>
                     <Styled.PosterGenre>
                         {movie.genre_ids.map((genre, i) => {

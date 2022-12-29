@@ -5,21 +5,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
+import IconLike from "../Image/즐겨찾기전.png"
+import IconLiked from "../Image/즐겨찾기후.png"
+import { deleteLocalStorage, saveLocalStorage } from "../hooks/hook";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { likeState } from "../state/likeState";
 
 export interface IModal {
     clickMovie?: Iresults;
 }
 
-
 // 조금 더 캐싱해보자
-const Detail: React.FunctionComponent<IModal> = ({clickMovie: movie}) => {
+function Detail ({clickMovie: movie} : IModal) {
 // console.log('movie: ', movie);
 
 const { movieId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IDetailresults>(["movie_detail", movieId], ()=>getMovie(movieId))
 //useQuery 이름 지어주는거 매우 중요 ["movie_detail", movieId] movieId로 개별 지정 안해주면 전에꺼 캐싱해옴
-console.log('data: ', data);
 
 const [getPost, setGetPost] = useState(getPosterImg(movie?.backdrop_path || "", "w500"))
 const [check, setCheck] = useState(false)
@@ -40,7 +43,24 @@ useEffect(()=>{
     } // url로 바로 들어오는거 대응
 },[check])
 
-// console.log(movie)
+// local에 저장한 찜한 콘텐츠 체크
+const [LikedArr, setLikeArr] = useRecoilState(likeState)
+const addLike = (movie?:Iresults) => {
+    alert('내가 찜한 콘텐츠에 추가🎈');
+    saveLocalStorage(movie);
+    if(movie)
+    setLikeArr([...LikedArr, movie])
+}
+const deleteLike = (movie?:Iresults) => {
+    alert('내가 찜한 콘텐츠에서 삭제🖐');
+    deleteLocalStorage(movie);
+    let copy = [...LikedArr]; // 불변성 조심하자(ts에 안걸리는)스프레드 연산자 깜빡해서 엄청 해맸네
+    let index = LikedArr.findIndex((v)=> v.id === data?.id)
+    copy.splice(index, 1)
+    setLikeArr(copy)  
+}
+
+
     return(
         <Wrap onClick={()=>{navigate('')}}>
             <Modal onClick={(e)=>e.stopPropagation()}>
@@ -54,6 +74,14 @@ useEffect(()=>{
                             {Math.trunc(data?.runtime / 60)}시간
                             { data?.runtime - Math.trunc(data?.runtime / 60)*60}분
                         </Runtime>}
+                {/* 즐겨찾기 여부 확인 */}
+                    { LikedArr.findIndex((v)=> v.id === data?.id) === -1 ? 
+                    (<Like 
+                    IconLike={IconLike} onClick={()=>{addLike(movie)}}/>) :
+                    (<Like 
+                    IconLike={IconLiked} onClick={()=>{deleteLike(movie)}}/>)
+                    }
+
                 </FlexBox>
                 <FlexBox2>
                     {data?.genres.map((genre, i) => {
@@ -124,6 +152,15 @@ background-position: center;
 background-size: cover;
 width: 20px;
 height: 20px;
+`
+const Like = styled.div<{IconLike:string}>`
+background-image: url(${props=>props.IconLike});
+background-position: center;
+background-size: cover;
+width: 30px;
+height: 30px;
+margin: -8px 0 0 8px;
+cursor: pointer;
 `
 const Runtime = styled.div`
 `

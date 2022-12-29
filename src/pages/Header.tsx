@@ -126,6 +126,7 @@ height: 25px;
 background-image: url(${props=>props.Icon});
 background-position: center;
 background-size: cover;
+cursor: pointer;
 `
 const Profile = styled.div`
 position: absolute;

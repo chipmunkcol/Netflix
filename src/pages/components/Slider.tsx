@@ -6,7 +6,11 @@ import { getGenre } from "../../api/api";
 import IconAdult from "../../Image/adult.png"
 import IconTeenager from "../../Image/teenager.png"
 import IconLike from "../../Image/즐겨찾기전.png"
+import IconLiked from "../../Image/즐겨찾기후.png"
 import SliderBtn from "./SliderBtn";
+import { saveLocalStorage } from "../../hooks/hook";
+import { useRecoilValue } from "recoil";
+import { likeState } from "../../state/likeState";
 
 interface ISlider {
     data?: Idata;
@@ -49,6 +53,8 @@ const openModal = (movieId:number) => {
     navigate(`movie/${movieId}`)
 }
 
+const likedArr:Iresults[] = useRecoilValue(likeState)
+
     return(
         <Wrap number={number}>
         <SliderMain ref={slideRef} >
@@ -64,7 +70,7 @@ const openModal = (movieId:number) => {
                         <FlexBox>
                             <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
                             <PosterVote>평점 {movie.vote_average}점</PosterVote>
-                            <Like IconLike={IconLike} onClick={()=>{alert('즐겨찾기 추가')}}/>
+                            <Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
                         </FlexBox>
                         <PosterGenre>
                             {movie.genre_ids.map((genre, i) => {
@@ -90,11 +96,13 @@ const openModal = (movieId:number) => {
 
 const Wrap = styled.div<{number: number}>` // 슬라이더 number에 따라 css 위치 조정
 position: absolute;
-top: ${props=>props.number === 1 ? "87%" : props.number === 2? "129%" : "169%" };
+top: ${props=>props.number === 1 ? "76%" : props.number === 2? "118%" : "158%" };
 width: 100%;
-height: 250px;
+height: 320px;
 margin: 0 auto;
 overflow: hidden;
+display: flex;
+align-items: center;
 &:hover {
     li {
         opacity: 1;
@@ -155,15 +163,16 @@ background-size: cover;
 width: 20px;
 height: 20px;
 `
-export const PosterVote = styled.div``
+export const PosterVote = styled.div`
+font-size: 14px;
+`
 export const Like = styled.div<{IconLike:string}>`
 background-image: url(${props=>props.IconLike});
 background-position: center;
 background-size: cover;
 width: 23px;
 height: 17px;
-margin-left: 15px;
-cursor: pointer;
+margin: -2px 0 0 6px;
 `
 export const PosterGenre = styled.div`
 display: flex;

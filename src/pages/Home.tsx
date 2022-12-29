@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { getMovies, getPopularMovie, getPosterImg, getTopMovie, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
 import Slider from "./components/Slider";
 import { useMatch } from "react-router-dom";
 import SliderTOP10 from "./components/SliderTOP10";
+
 
 function Home () {
     
@@ -20,6 +21,13 @@ const [clickMovie, setClickMovie] = useState<Iresults>()
 const movieId = useMatch('movie/:movieId')
 
 
+// 내가 찜한 콘텐츠 로컬에 저장하자. (함수 경로 ./hooks/hook)]
+useEffect(()=>{
+    if(!localStorage.getItem('like')){
+        localStorage.setItem('like', JSON.stringify([]))
+    } 
+},[])
+
 if(isLoading) {
     return <>Loading</>
 }
@@ -30,7 +38,7 @@ if(isLoading) {
                 <Overview>{data?.results[0].overview}</Overview>
 
             </Banner>
-            
+
             <STitle>현재 상영중인 영화</STitle>
             {/* 슬라이더 number로 position top 조절해줌 */}
             <Slider data={data} setClickMovie={setClickMovie} number={1}/>

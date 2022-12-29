@@ -63,3 +63,6 @@ data?.map((price) => Number(price.close)) as number[]
 number[]로 return 해줘야되는데 string|undefined 여서 => as number[]로 강제해서 해결했음... 간단한건데 몇시간을 막힌거지..?  
 
 <ThemeProvider theme={theme}>으로 전역 styled 제어 해줄 때 styled.d.ts 로 선언해줘야 되는데 이때 파일명 styled.d.ts로 고정임 다른 이름안됨 
+
+와 옆으로 스크롤바 생기는거 진짜 빡친다
+width를 100vh같이 고정값으로 주는거 조심하자 가급적 %로 100%!!

@@ -16,7 +16,9 @@ export const router = createBrowserRouter([
                 {path: "movie/:movieId", element: <Detail />}
             ]},
             {path: "tv", element: <TV />},
-            {path: "mine", element: <Mine />},
+            {path: "mine", element: <Mine />, children: [
+                {path: ":movieId", element: <Detail />}
+            ]},
             {path: "search/:search", element: <Search />, children:[
                 {path: ":movieId", element: <Detail />}
             ]},
