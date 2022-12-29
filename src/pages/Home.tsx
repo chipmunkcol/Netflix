@@ -5,6 +5,7 @@ import { getMovies, getPopularMovie, getPosterImg, getTopMovie, Idata, Iresults 
 import Detail from "./Detail";
 import Slider from "./components/Slider";
 import { useMatch } from "react-router-dom";
+import SliderTOP10 from "./components/SliderTOP10";
 
 function Home () {
     
@@ -27,21 +28,21 @@ if(isLoading) {
             <Banner bgImage={getPosterImg(data?.results[0].backdrop_path || "")}>
                 <Title>{data?.results[0].title}</Title>
                 <Overview>{data?.results[0].overview}</Overview>
-                
-            <STitle>현재 상영중인 영화</STitle>
-            {/* 슬라이더 number로 position top 조절해줌 */}
-                <Slider data={data} setClickMovie={setClickMovie} number={1}/>
 
             </Banner>
             
+            <STitle>현재 상영중인 영화</STitle>
+            {/* 슬라이더 number로 position top 조절해줌 */}
+            <Slider data={data} setClickMovie={setClickMovie} number={1}/>
+
             <STitle2>지금 뜨는 콘텐츠</STitle2>
             {/* 슬라이더(인기영화 ) */}
-                <Slider data={dataPupular} setClickMovie={setClickMovie} number={2}/>
+            <Slider data={dataPupular} setClickMovie={setClickMovie} number={2}/>
 
 
-            <STitle3>오늘 TOP 20 영화</STitle3>
+            <STitle3>오늘 TOP 10 영화</STitle3>
             {/* 슬라이더(TOP 20 영화 ) */}
-                <Slider data={dataTop} setClickMovie={setClickMovie} number={3}/>
+            <SliderTOP10 data={dataTop} setClickMovie={setClickMovie} number={3}/>
 
             {/* 영화 Detail 컴포넌트(모달) */}
             {movieId && <Detail clickMovie={clickMovie} />}
@@ -51,6 +52,7 @@ if(isLoading) {
 }
 const Wrap =styled.div`
 height: 200vh;
+width: 100%;
 `
 const Banner = styled.div<{bgImage : string}>`
 height: 100vh;
@@ -66,10 +68,14 @@ gap: 20px;
 const Title = styled.div`
 font-size: 64px;
 margin-left: 24px;
+width: 53vw;
 `
 const Overview = styled.div`
 font-size: 24px;
 margin-left: 24px;
+width: 46vw;
+height: 14vh;
+overflow: hidden;
 `
 const STitle = styled.div`
 font-size: 24px;

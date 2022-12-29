@@ -104,7 +104,6 @@ overflow: hidden;
 
 export const SliderMain = styled.div`
 position: relative;
-width: 100%;
 display: flex;
 `
 export const Poster = styled.div`
@@ -127,7 +126,7 @@ export const PosterImg = styled.div<{bgImage : string}>`
 width: 253px;
 height: 155px;
 margin-right: 10px;
-flex: none;
+/* flex: none; */
 background-image: url(${props=>props.bgImage});
 background-position: top;
 background-size: contain;
