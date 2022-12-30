@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Navigate, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconSearch from "../Image/search.png"
+import IconSearchBlack from "../Image/searchBlack.png"
 import { throttle } from 'lodash'
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { whiteMode } from "../state/whiteModeState";
 
 function Header(){
 
@@ -43,6 +46,10 @@ useEffect(()=>{
     }
 },[search])
 
+// WhiteMode 스위치
+const [WhiteMode, setWhiteMode] = useRecoilState(whiteMode)
+const onclickWhiteMode = () => setWhiteMode(prev => !prev)
+
     return(
         <Wrap scrollY={scrollY}>
             <Logo src='https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg'/>
@@ -52,9 +59,9 @@ useEffect(()=>{
                 <Mine onClick={()=>{navigate('mine')}}> 내가 찜한 콘텐츠 </Mine>
                 <Circle circleX={HomePage || HomeDetailPage ? 166 : TVPage || TVDetailPage ? 214 : 315 }/>
             </Nav>
-                <SearchIcon Icon={IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
+                <SearchIcon Icon={WhiteMode ? IconSearchBlack : IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
                 <SearchInput clickInput={clickInput} onChange={(e)=>{setSearch(e.target.value)}}/>
-                <Profile />
+                <Profile onClick={onclickWhiteMode}/>
         </Wrap>
     )
 }

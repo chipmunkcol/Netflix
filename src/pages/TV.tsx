@@ -67,6 +67,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 gap: 20px;
+color: #fff;
 `
 const Title = styled.div`
 font-size: 64px;
@@ -86,10 +87,15 @@ font-weight: 700;
 position: absolute;
 top: 79%;
 left: 20px;
+color: #fff;
 `
 const STitle2 = styled(STitle)`
-top: 122%;`
-const STitle3 = styled(STitle)`
+top: 122%;
+font-size: 24px;
+font-weight: 700;
+position: absolute;
+left: 20px;`
+const STitle3 = styled(STitle2)`
 top: 163%;`
 
 export default TV;

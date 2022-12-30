@@ -70,7 +70,7 @@ const Grid2 = styled(Grid1)`
 
 const Title = styled.div`
 font-size: 32px;
-margin: 16px 0 -35px 99px;
+margin: 16px 0 0px 99px;
 `
 
 

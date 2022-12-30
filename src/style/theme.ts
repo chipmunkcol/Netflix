@@ -12,3 +12,16 @@ export const theme: DefaultTheme = {
         darker: "#e5e5e5"
     }
 }
+
+export const whiteTheme: DefaultTheme = {
+    red: "#E51013",
+    black: {
+        deepDark: "#fff",
+        darker: "#f1f2f6",
+        lighter: "#e5e5e5"
+    },
+    white: {
+        lighter: "#181818",
+        darker: "#141414"
+    }
+}
