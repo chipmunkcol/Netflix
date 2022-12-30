@@ -1,24 +1,17 @@
 import styled from "styled-components";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { getPosterImg, Idata, Iresults } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import { getGenre } from "../../api/api";
-import IconAdult from "../../Image/adult.png"
-import IconTeenager from "../../Image/teenager.png"
-import IconLike from "../../Image/즐겨찾기전.png"
-import IconLiked from "../../Image/즐겨찾기후.png"
+
 import SliderBtn from "./SliderBtn";
 import { saveLocalStorage } from "../../hooks/hook";
 import { useRecoilValue } from "recoil";
 import { likeState } from "../../state/likeState";
 
-interface ISlider {
-    data?: Idata;
-    setClickMovie: React.Dispatch<React.SetStateAction<Iresults | undefined>>;
-    number: number;
-}
 
-function Slider ({data, setClickMovie, number}: ISlider){
+function SliderTV (){
 
 // slider ref로 구현
 const slideRef = useRef<any>(null)
@@ -56,41 +49,42 @@ const openModal = (movieId:number) => {
 const likedArr:Iresults[] = useRecoilValue(likeState)
 
     return(
-        <Wrap number={number}>
-        <SliderMain ref={slideRef} >
-            {data?.results.map(movie => 
-                <Poster key={movie.id}>
-                    <PosterImg 
-                    bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
-                    onClick={()=>{openModal(movie.id); setClickMovie(movie);}}
-                    />
-                    <PosterTitle>{movie.title}</PosterTitle>
+        <></>
+        // <Wrap number={number}>
+        // <SliderMain ref={slideRef} >
+        //     {data?.results.map(movie => 
+        //         <Poster key={movie.id}>
+        //             <PosterImg 
+        //             bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
+        //             onClick={()=>{openModal(movie.id); setClickMovie(movie);}}
+        //             />
+        //             <PosterTitle>{movie.title}</PosterTitle>
                     
-                    <OpacityBox>
-                        <FlexBox>
-                            <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
-                            <PosterVote>평점 {movie.vote_average}점</PosterVote>
-                            <Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
-                        </FlexBox>
-                        <PosterGenre>
-                            {movie.genre_ids.map((genre, i) => {
-                                    if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
-                                        return (<div key={Math.random()}>
-                                                    {getGenre[getGenre.findIndex((v) => v.id === genre)].name} 
-                                                    {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
-                                                </div>)
-                                    } 
-                                })
-                            }
-                        </PosterGenre>
-                    </OpacityBox>
-                </Poster>
-            )}
-        </SliderMain>
+        //             <OpacityBox>
+        //                 <FlexBox>
+        //                     <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
+        //                     <PosterVote>평점 {movie.vote_average}점</PosterVote>
+        //                     <Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
+        //                 </FlexBox>
+        //                 <PosterGenre>
+        //                     {movie.genre_ids.map((genre, i) => {
+        //                             if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
+        //                                 return (<div key={Math.random()}>
+        //                                             {getGenre[getGenre.findIndex((v) => v.id === genre)].name} 
+        //                                             {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
+        //                                         </div>)
+        //                             } 
+        //                         })
+        //                     }
+        //                 </PosterGenre>
+        //             </OpacityBox>
+        //         </Poster>
+        //     )}
+        // </SliderMain>
 
-        <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev}/>
+        // <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev}/>
 
-        </Wrap>
+        // </Wrap>
     )
 }
 
@@ -183,4 +177,4 @@ span {
     font-weight: 800;
 }
 `
-export default Slider;
+export default SliderTV;

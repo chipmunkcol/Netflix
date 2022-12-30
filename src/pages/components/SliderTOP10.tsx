@@ -65,6 +65,7 @@ const likedArr:Iresults[] = useRecoilValue(likeState)
                         bgImage={getPosterImg(movie.poster_path || "", "w500")} 
                         />
                     </Flex>
+                    <PosterTitle>{movie.title}</PosterTitle>
                     <OpacityBox>
                         <FlexBox>
                             <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
@@ -95,7 +96,7 @@ const likedArr:Iresults[] = useRecoilValue(likeState)
 
 const Wrap = styled.div<{number: number}>` // 슬라이더 number에 따라 css 위치 조정
 position: absolute;
-top: ${props=>props.number === 1 ? "87%" : props.number === 2? "129%" : "169%" };
+top: 169%;
 width: 100%;
 margin: 0 auto;
 overflow: hidden;
@@ -109,10 +110,10 @@ overflow: hidden;
 export const SliderMain = styled.div`
 position: relative;
 display: flex;
-height: 250px;
+height: 280px;
 `
 export const Poster = styled.div`
-width: 206px;
+width: 298px;
 height: 171px;
 background-color: ${props=>props.theme.black.deepDark};
 margin-left: 45px;
@@ -135,6 +136,7 @@ align-items: center;
 export const PosterNum = styled.div`
 color: ${p=>p.theme.black.lighter};
 font-size: 170px;
+font-family: fantasy;
 `
 export const PosterImg = styled.div<{bgImage : string}>`
 width: 110px;
@@ -146,8 +148,9 @@ background-repeat: no-repeat;
 ` 
 export const PosterTitle = styled.div`
 position: relative;
-top: -10px;
+top: -2px;
 left: 9px;
+text-align: center;
 `
 export const OpacityBox = styled.ul`
 opacity: 0;

@@ -13,7 +13,7 @@ function Home () {
 const { data, isLoading } = useQuery<Idata>(["now_playing"], getMovies)
 const { data: dataPupular } = useQuery<Idata>(["popularMovie"], getPopularMovie)
 const { data: dataTop } = useQuery<Idata>(["TopMovie"], getTopMovie)
-console.log('dataTop: ', dataTop);
+console.log(dataPupular);
 
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
@@ -21,7 +21,7 @@ const [clickMovie, setClickMovie] = useState<Iresults>()
 const movieId = useMatch('movie/:movieId')
 
 
-// 내가 찜한 콘텐츠 로컬에 저장하자. (함수 경로 ./hooks/hook)]
+// 내가 찜한 콘텐츠 로컬에 저장하자. (호출 함수 경로 ./hooks/hook)]
 useEffect(()=>{
     if(!localStorage.getItem('like')){
         localStorage.setItem('like', JSON.stringify([]))
@@ -59,7 +59,7 @@ if(isLoading) {
     )
 }
 const Wrap =styled.div`
-height: 200vh;
+height: 210vh;
 width: 100%;
 `
 const Banner = styled.div<{bgImage : string}>`
