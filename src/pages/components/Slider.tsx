@@ -58,7 +58,7 @@ const likedArr:Iresults[] = useRecoilValue(likeState)
     return(
         <Wrap number={number}>
         <SliderMain ref={slideRef} >
-            {data?.results.map(movie => 
+            {data?.results.slice(1,data.results.length -1).map(movie => 
                 <Poster key={movie.id}>
                     <PosterImg 
                     bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 

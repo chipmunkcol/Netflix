@@ -7,53 +7,37 @@ import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
 import IconLike from "../Image/즐겨찾기전.png"
 import IconLiked from "../Image/즐겨찾기후.png"
-import { deleteLocalStorage, saveLocalStorage } from "../hooks/hook";
+import { deleteLocalStorage, deleteTVLocalStorage, saveLocalStorage, saveTVLocalStorage } from "../hooks/hook";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { likeState } from "../state/likeState";
+import { likeState  } from "../state/likeState";
+import { likeTVState } from "../state/likeTVState";
+import { getTV, IdetailTVresults, IresultsTV } from "../api/apiTv";
 
-export interface IModal {
-    clickMovie?: Iresults;
+interface IModalTV {
+    clickTV?: IresultsTV;
 }
 
 // 조금 더 캐싱해보자
-function Detail ({clickMovie: movie} : IModal) {
-// console.log('movie: ', movie);
+function DetailTV ({clickTV: movie} : IModalTV) {
 
-const { movieId } = useParams()
+const { tvId } = useParams()
 const navigate = useNavigate()
-const {data, isLoading} = useQuery<IDetailresults>(["movie_detail", movieId], ()=>getMovie(movieId))
-//useQuery 이름 지어주는거 매우 중요 ["movie_detail", movieId] movieId로 개별 지정 안해주면 전에꺼 캐싱해옴
-
-const [getPost, setGetPost] = useState(getPosterImg(movie?.backdrop_path || "", "w500"))
-const [check, setCheck] = useState(false)
-function getPostOriginal (){
-    const Caching = getPosterImg(movie?.backdrop_path || "") //고화질 이미지 불러오는 동안 기존 사진 보여주자
-    setTimeout(() => {
-        setGetPost(Caching)
-    }, 1000);
-}
-
-useEffect(()=>{
-    if(movie) { 
-        getPostOriginal() 
-    } else { 
-        setTimeout(() => {
-            setGetPost(getPosterImg(data?.backdrop_path || "")); setCheck(true) 
-        }, 1000);
-    } // url로 바로 들어오는거 대응
-},[check])
+const {data, isLoading} = useQuery<IdetailTVresults>(["tv_detail", tvId], ()=>getTV(tvId))
+console.log('data: ', data);
 
 // local에 저장한 찜한 콘텐츠 체크
-const [LikedArr, setLikeArr] = useRecoilState(likeState)
-const addLike = (movie?:Iresults) => {
+const [LikedArr, setLikeArr] = useRecoilState(likeTVState)
+// console.log('LikedArr: ', LikedArr);
+
+const addLike = (movie?:IresultsTV) => {
+    if(movie){
     alert('내가 찜한 콘텐츠에 추가🎈');
-    saveLocalStorage(movie);
-    if(movie)
-    setLikeArr([...LikedArr, movie])
+    saveTVLocalStorage(movie);    // saveLocalStorage의 인자 type을 선택적으로 받게 수정해줘야됨! 
+    setLikeArr([...LikedArr, movie])}
 }
-const deleteLike = (movie?:Iresults) => {
+const deleteLike = (movie?:IresultsTV) => {
     alert('내가 찜한 콘텐츠에서 삭제🖐');
-    deleteLocalStorage(movie);
+    deleteTVLocalStorage(movie);
     let copy = [...LikedArr]; // 불변성 조심하자(ts에 안걸리는)스프레드 연산자 깜빡해서 엄청 해맸네
     let index = LikedArr.findIndex((v)=> v.id === data?.id)
     copy.splice(index, 1)
@@ -61,19 +45,19 @@ const deleteLike = (movie?:Iresults) => {
 }
 
 
+if(isLoading){
+    return <>Loading</>
+}
+
     return(
         <Wrap onClick={()=>{navigate('')}}>
             <Modal onClick={(e)=>e.stopPropagation()}>
-                <MainImg bgImg={getPost}/>
-                <Title>{movie ? movie?.title : data?.title}</Title>
+                <MainImg bgImg={getPosterImg(data?.backdrop_path || "", "w500")}/>
+                <Title>{movie ? movie?.name : data?.name}</Title>
                 <FlexBox>
-                    <Release>{data?.release_date?.slice(0,4)}</Release>
+                    {/* <Release>{data?.first_air_date?.slice(0,4)}</Release> */}
                     <Adult bgImg={data?.adult ? IconAdult : IconTeenager} />
-                    {data?.runtime && 
-                        <Runtime>
-                            {Math.trunc(data?.runtime / 60)}시간
-                            { data?.runtime - Math.trunc(data?.runtime / 60)*60}분
-                        </Runtime>}
+                    <Season>시즌 {data?.number_of_seasons}개 </Season>
                 {/* 즐겨찾기 여부 확인 */}
                     { LikedArr.findIndex((v)=> v.id === data?.id) === -1 ? 
                     (<Like 
@@ -153,6 +137,7 @@ background-size: cover;
 width: 20px;
 height: 20px;
 `
+const Season = styled.div``
 const Like = styled.div<{IconLike:string}>`
 background-image: url(${props=>props.IconLike});
 background-position: center;
@@ -175,4 +160,4 @@ margin: 16px auto 0 auto;
 `
 
 
-export default Detail;
+export default DetailTV;

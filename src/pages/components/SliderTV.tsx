@@ -4,14 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import { getPosterImg, Idata, Iresults } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import { getGenre } from "../../api/api";
-
+import IconAdult from "../../Image/adult.png"
+import IconTeenager from "../../Image/teenager.png"
+import IconLike from "../../Image/즐겨찾기전.png"
+import IconLiked from "../../Image/즐겨찾기후.png"
 import SliderBtn from "./SliderBtn";
 import { saveLocalStorage } from "../../hooks/hook";
 import { useRecoilValue } from "recoil";
 import { likeState } from "../../state/likeState";
+import { genresTV, IdataTV, IresultsTV } from "../../api/apiTv";
 
-
-function SliderTV (){
+interface ISliderTV {
+    data?: IdataTV;
+    setClickTV: React.Dispatch<React.SetStateAction<IresultsTV | undefined>>;
+    number: number;
+}
+function SliderTV ({data, setClickTV, number}: ISliderTV){
 
 // slider ref로 구현
 const slideRef = useRef<any>(null)
@@ -42,49 +50,47 @@ useEffect(()=>{
 
 
 const navigate = useNavigate()
-const openModal = (movieId:number) => {
-    navigate(`movie/${movieId}`)
+const openModal = (tvId:number) => {
+    navigate(`${tvId}`)
 }
 
 const likedArr:Iresults[] = useRecoilValue(likeState)
 
     return(
-        <></>
-        // <Wrap number={number}>
-        // <SliderMain ref={slideRef} >
-        //     {data?.results.map(movie => 
-        //         <Poster key={movie.id}>
-        //             <PosterImg 
-        //             bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
-        //             onClick={()=>{openModal(movie.id); setClickMovie(movie);}}
-        //             />
-        //             <PosterTitle>{movie.title}</PosterTitle>
+        <Wrap number={number}>
+        <SliderMain ref={slideRef} >
+            {data?.results.slice(2,data.results.length).map(movie => 
+                <Poster key={movie.id}>
+                    <PosterImg 
+                    bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
+                    onClick={()=>{openModal(movie.id); setClickTV(movie);}}
+                    />
+                    <PosterTitle>{movie.name}</PosterTitle>
                     
-        //             <OpacityBox>
-        //                 <FlexBox>
-        //                     <PosterAdult bgImg={movie.adult===true ? IconAdult : IconTeenager} />
-        //                     <PosterVote>평점 {movie.vote_average}점</PosterVote>
-        //                     <Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
-        //                 </FlexBox>
-        //                 <PosterGenre>
-        //                     {movie.genre_ids.map((genre, i) => {
-        //                             if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
-        //                                 return (<div key={Math.random()}>
-        //                                             {getGenre[getGenre.findIndex((v) => v.id === genre)].name} 
-        //                                             {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
-        //                                         </div>)
-        //                             } 
-        //                         })
-        //                     }
-        //                 </PosterGenre>
-        //             </OpacityBox>
-        //         </Poster>
-        //     )}
-        // </SliderMain>
+                    <OpacityBox>
+                        <FlexBox>
+                            <PosterVote>평점 {movie.vote_average}점</PosterVote>
+                            <Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
+                        </FlexBox>
+                        <PosterGenre>
+                            {movie.genre_ids.map((genre, i) => {
+                                    if(genresTV.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
+                                        return (<div key={Math.random()}>
+                                                    {genresTV[genresTV.findIndex((v) => v.id === genre)]?.name} 
+                                                    {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
+                                                </div>)
+                                    } 
+                                })
+                            }
+                        </PosterGenre>
+                    </OpacityBox>
+                </Poster>
+            )}
+        </SliderMain>
 
-        // <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev}/>
+        <SliderBtn onclickNext={onclickNext} onclickPrev={onclickPrev}/>
 
-        // </Wrap>
+        </Wrap>
     )
 }
 

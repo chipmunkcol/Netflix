@@ -1,7 +1,13 @@
+import { IresultsTV } from './../api/apiTv';
 import { Iresults } from './../api/api';
 import { atom, selector } from "recoil";
 
-const initialState:Iresults[] = JSON.parse(localStorage.getItem('like') || "")
+let initialState:Iresults[];
+if(localStorage.getItem('like')){
+    initialState = JSON.parse(localStorage.getItem('like') || "");
+} else {
+    initialState = [];
+}
 
 export const likeState = atom({
     key: 'likeState',

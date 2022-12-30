@@ -29,9 +29,9 @@ useEffect(()=>{
 const navigate = useNavigate()
 
 const HomePage = useMatch('')
+const HomeDetailPage = useMatch('movie/:movieId')
 const TVPage = useMatch('tv')
-const MinePage = useMatch('mine')
-
+const TVDetailPage = useMatch('tv/:tvId')
 // search 아이콘 클릭 시 input 애니메이션 
 const [clickInput, setClickInput] = useState(false)
 
@@ -50,7 +50,7 @@ useEffect(()=>{
                 <Home onClick={()=>{navigate('')}}> 홈 </Home>
                 <TV onClick={()=>{navigate('tv')}}> TV </TV>
                 <Mine onClick={()=>{navigate('mine')}}> 내가 찜한 콘텐츠 </Mine>
-                <Circle circleX={HomePage ? 166 : TVPage ? 214 : MinePage ? 315 : 168}/>
+                <Circle circleX={HomePage || HomeDetailPage ? 166 : TVPage || TVDetailPage ? 214 : 315 }/>
             </Nav>
                 <SearchIcon Icon={IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
                 <SearchInput clickInput={clickInput} onChange={(e)=>{setSearch(e.target.value)}}/>

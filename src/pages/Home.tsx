@@ -25,6 +25,11 @@ const movieId = useMatch('movie/:movieId')
 useEffect(()=>{
     if(!localStorage.getItem('like')){
         localStorage.setItem('like', JSON.stringify([]))
+    }
+},[])
+useEffect(()=>{
+    if(!localStorage.getItem('likeTV')){
+        localStorage.setItem('likeTV', JSON.stringify([]))
     } 
 },[])
 

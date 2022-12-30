@@ -5,29 +5,23 @@ import Detail from "./Detail";
 
 import { useMatch } from "react-router-dom";
 import SliderTOP10 from "./components/SliderTOP10";
-import { getTv, IdataTV } from "../api/apiTv";
+import { getTVs, IdataTV, IresultsTV } from "../api/apiTv";
 import { getPosterImg } from "../api/api";
+import SliderTV from "./components/SliderTV";
+import DetailTV from "./DetailTV";
 
 
 function TV () {
 
-const { data, isLoading } = useQuery<IdataTV>(["on_the_air"], getTv)
+const { data, isLoading } = useQuery<IdataTV>(["on_the_air"], getTVs)
 // const { data: dataPupular } = useQuery<Idata>(["popularMovie"], getPopularMovie)
 // const { data: dataTop } = useQuery<Idata>(["TopMovie"], getTopMovie)
 console.log(data);
 
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
-// const [clickMovie, setClickMovie] = useState<Iresults>()
-// const movieId = useMatch('movie/:movieId')
-
-
-// 내가 찜한 콘텐츠 로컬에 저장하자. (호출 함수 경로 ./hooks/hook)]
-useEffect(()=>{
-    if(!localStorage.getItem('like')){
-        localStorage.setItem('like', JSON.stringify([]))
-    } 
-},[])
+const [clickTV, setClickTV] = useState<IresultsTV>()
+const tvId = useMatch('tv/:tvId')
 
 if(isLoading) {
     return <>Loading</>
@@ -40,9 +34,9 @@ if(isLoading) {
 
             </Banner>
 
-            <STitle>현재 상영중인 영화</STitle>
+            <STitle>현재 상영중인 드라마</STitle>
             {/* 슬라이더 number로 position top 조절해줌 */}
-            
+            <SliderTV data={data} setClickTV={setClickTV} number={1}/>
 
             <STitle2>지금 뜨는 콘텐츠</STitle2>
             {/* 슬라이더(인기영화 ) */}
@@ -53,8 +47,8 @@ if(isLoading) {
             {/* 슬라이더(TOP 20 영화 ) */}
             {/* <SliderTOP10 data={dataTop} setClickMovie={setClickMovie} number={3}/> */}
 
-            {/* 영화 Detail 컴포넌트(모달) */}
-            {/* {movieId && <Detail clickMovie={clickMovie} />} */}
+            {/* TV Detail 컴포넌트(모달) */}
+            {tvId && <DetailTV clickTV={clickTV} />}
 
         </Wrap>
     )

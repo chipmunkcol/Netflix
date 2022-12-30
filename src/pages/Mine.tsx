@@ -1,80 +1,76 @@
-import { useMatch, useNavigate, useParams } from "react-router-dom"
+import { useMatch,  } from "react-router-dom"
 import { useState } from "react"
-import { useQuery } from "@tanstack/react-query";
-import { getGenre, getPosterImg, Idata, Iresults, searchMovie } from "../api/api";
-import IconAdult from "../Image/adult.png"
-import IconTeenager from "../Image/teenager.png"
-import IconLike from "../Image/즐겨찾기전.png"
-import IconLiked from "../Image/즐겨찾기후.png"
+
 import styled from "styled-components";
-import * as Styled from "./components/Slider"
 import Detail from "./Detail";
 import { useRecoilValue } from "recoil";
 import { likeState } from "../state/likeState";
+import MineComponent from "./components/MineComponent";
+import { Iresults } from "../api/api";
+import { likeTVState } from "../state/likeTVState";
+import MineTVComponent from "./components/MineTVComponent";
+import { IresultsTV } from "../api/apiTv";
+import DetailTV from "./DetailTV";
 
 
 function Mine() {
 
-const data:Iresults[] = JSON.parse(localStorage.getItem('like') || "")
-console.log('data: ', data);
+const data = useRecoilValue(likeState)
+const dataTV = useRecoilValue(likeTVState)
 
 const [clickMovie, setClickMovie] = useState<Iresults>()
+const [clickTV, setClickTV] = useState<IresultsTV>()
 
-const movieId = useMatch('mine/:movieId')
-const navigate = useNavigate()
-const openModal = (movieId:number) => {
-    navigate(`mine/${movieId}`)
-}
+const movieId = useMatch('mine/movie/:movieId')
+const tvId = useMatch('mine/tv/:tvId')
 
-const likedArr = useRecoilValue(likeState)
 
 if(!data) {
     return (<div style={{fontSize:'48px', textAlign:'center'}}>🎃찜한 콘텐츠가 없습니다🎃</div>)
 }
     return(
-        <Wrap> 
-        {data?.map(movie => 
-            <Styled.Poster key={movie.id} style={{marginTop:"50px"}}>
-                <Styled.PosterImg 
-                bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
-                onClick={()=>{openModal(movie.id); setClickMovie(movie);}}
-                />
-                <Styled.PosterTitle>{movie.title}</Styled.PosterTitle>
-                
-                <Styled.OpacityBox>
-                    <Styled.FlexBox>
-                        <Styled.PosterAdult bgImg={movie.adult ? IconAdult : IconTeenager} />
-                        <Styled.PosterVote>평점 {movie.vote_average}점</Styled.PosterVote>
-                        <Styled.Like IconLike={likedArr.findIndex((v)=>v.id === movie.id) === -1 ? IconLike : IconLiked} />
-                    </Styled.FlexBox>
-                    <Styled.PosterGenre>
-                        {movie.genre_ids.map((genre, i) => {
-                                if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
-                                    return (<div key={Math.random()}>
-                                                {getGenre[getGenre.findIndex((v) => v.id === genre)]?.name} 
-                                                {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
-                                            </div>)
-                                } 
-                            })
-                        }
-                    </Styled.PosterGenre>
-                </Styled.OpacityBox>
-            </Styled.Poster>
-        )}
+        <Wrap>
+            <Title>MOVIE</Title>
+            <Grid1> 
+            {data?.map(movie => 
+                <MineComponent movie={movie} setClickMovie={setClickMovie}/>
+            )}
 
-        {movieId && <Detail clickMovie={clickMovie} />}
+            </Grid1>
+
+            <Title>TV</Title>
+            <Grid2> 
+            {dataTV?.map(movie => 
+                <MineTVComponent movie={movie} setClickMovie={setClickTV}/>
+            )}
+
+            </Grid2>
+
+            {movieId ? <Detail clickMovie={clickMovie} /> : 
+                tvId ? <DetailTV clickTV={clickTV}/> : null}
 
         </Wrap>
     )
 }
-
 const Wrap = styled.div`
+position: absolute;
+top: 10%;
+right: 0;
+width: 100%;
+`
+const Grid1 = styled.div`
 display: grid;
 grid-template-columns: repeat(5, 267px);
 justify-content: center;
 width: 100%;
-position: absolute;
-top: 11%;
+position: relative;
+`
+const Grid2 = styled(Grid1)`
+`
+
+const Title = styled.div`
+font-size: 32px;
+margin: 16px 0 -35px 99px;
 `
 
 
