@@ -14,9 +14,9 @@ const [scrollY, setScrollY] = useState(false)
 
 const listenScroll = useMemo(() =>      // 스크롤 이벤트 렌더링 진짜 최적화마렵다.. throttle 써도 빡침
     throttle(() => {
-    if(window.scrollY > 100 && scrollY === false) {
+    if(window.scrollY > 50 && scrollY === false) {
         setScrollY(true)
-    } else if(window.scrollY <= 100 && scrollY === true) {
+    } else if(window.scrollY <= 50 && scrollY === true) {
         setScrollY(false)
     }
 },300), [scrollY])
@@ -61,7 +61,7 @@ const onclickWhiteMode = () => setWhiteMode(prev => !prev)
                 <Home onClick={()=>{navigate('')}}> 홈 </Home>
                 <TV onClick={()=>{navigate('tv')}}> TV </TV>
                 <Mine onClick={()=>{navigate('mine')}}> 내가 찜한 콘텐츠 </Mine>
-                <Circle circleX={HomePage || HomeDetailPage ? 165.7 : TVPage || TVDetailPage ? 214 : 315 }/>
+                <Circle circleX={HomePage || HomeDetailPage ? 206.7 : TVPage || TVDetailPage ? 255 : 356 }/>
             </Nav>
                 <SearchIcon Icon={WhiteMode ? IconSearchBlack : IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
                 <SearchInput clickInput={clickInput} onChange={(e)=>{setSearch(e.target.value)}}/>
@@ -84,7 +84,7 @@ transition: background-color 1s;
 `
 const Logo = styled.img`
 width: 100px;
-margin-left: 20px;
+margin-left: 4%;
 margin-right: 40px;
 cursor: pointer;
 :hover{

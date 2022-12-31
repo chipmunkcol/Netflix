@@ -63,11 +63,11 @@ if(isLoading) {
         </Wrap>
     )
 }
-const Wrap =styled.div`
+export const Wrap =styled.div`
 height: 210vh;
 width: 100%;
 `
-const Banner = styled.div<{bgImage : string}>`
+export const Banner = styled.div<{bgImage : string}>`
 height: 100vh;
 background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1)),
                     url(${props => props.bgImage});
@@ -79,19 +79,21 @@ justify-content: center;
 gap: 20px;
 color: #fff;
 `
-const Title = styled.div`
+export const Title = styled.div`
 font-size: 64px;
-margin-left: 24px;
+margin-left: 4%;
+margin-top: -157px;
 width: 53vw;
 `
-const Overview = styled.div`
+export const Overview = styled.div`
 font-size: 24px;
-margin-left: 24px;
+margin-left: 4%;
+margin-top: 10px;
 width: 46vw;
+line-height: normal;
 height: 14vh;
-overflow: hidden;
 `
-const STitle = styled.div`
+export const STitle = styled.div`
 font-size: 24px;
 font-weight: 700;
 position: absolute;
@@ -99,14 +101,14 @@ top: 79%;
 left: 20px;
 color: #fff;
 `
-const STitle2 = styled.div`
+export const STitle2 = styled.div`
 top: 122%;
 font-size: 24px;
 font-weight: 700;
 position: absolute;
 left: 20px;
 `
-const STitle3 = styled(STitle2)`
+export const STitle3 = styled(STitle2)`
 top: 163%;`
 
 export default Home;
