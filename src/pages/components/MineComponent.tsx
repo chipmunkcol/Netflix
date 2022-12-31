@@ -19,7 +19,7 @@ const openModal = (movieId:number) => {
 
 
     return(
-        <Styled.Poster key={movie.id} style={{marginTop:"50px"}}>
+        <Styled.Poster key={movie.id} style={{marginTop:"16px"}}>
             <Styled.PosterImg 
             bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
             onClick={()=>{openModal(movie.id); setClickMovie(movie);}}

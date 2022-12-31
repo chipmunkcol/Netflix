@@ -1,33 +1,37 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components"
+import { whiteMode } from "../../state/whiteModeState";
 
 interface ISlderBtn{
     onclickPrev: ()=>void;
     onclickNext: ()=>void;
     number?: number;
 }
-
 function SliderBtn ({onclickPrev, onclickNext, number}:ISlderBtn) {
+
+const WhiteMode = useRecoilValue(whiteMode)
+
     return(
         <>
-        <ButtonAreaL onClick={onclickPrev} number={number}>
+        <ButtonAreaL onClick={onclickPrev} number={number} WhiteMode={WhiteMode}>
             <ButtonL className="button" >{"<"}</ButtonL>
         </ButtonAreaL>
-        <ButtonAreaR onClick={onclickNext} number={number}>
+        <ButtonAreaR onClick={onclickNext} number={number} WhiteMode={WhiteMode}>
             <ButtonR className="button" >{">"}</ButtonR>
         </ButtonAreaR>
         </>
     )
 }
 
-const ButtonAreaL = styled.li<{number?:number}>`
+const ButtonAreaL = styled.li<{number?:number, WhiteMode:boolean}>`
 position: absolute;
 top: ${props=>props.number === 3 ? "3%" : "23%"}; // top10 영화인 3번째 슬라이더
 width: 50px;
 height: 170px;
-background-color: rgba(0,0,0,0.8);
+background-color: ${props=>props.WhiteMode ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.8)"};
+opacity: 0;
 display: flex;
 justify-content: center;
-opacity: 0;
 cursor: pointer;
 `
 const ButtonAreaR = styled(ButtonAreaL)`

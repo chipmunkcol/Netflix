@@ -94,6 +94,7 @@ margin: 0 auto;
 display: flex;
 justify-content: center;
 background-color: rgba(0,0,0, 0.7);
+color: #fff;
 `
 const Modal = styled.div`
 width: 850px;
@@ -157,6 +158,7 @@ overflow: hidden;
 display: flex;
 justify-content: center;
 margin: 16px auto 0 auto;
+color: ${p=>p.theme.white.lighter};
 `
 
 
