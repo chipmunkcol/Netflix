@@ -1,8 +1,6 @@
 🔧기술스택 (TypeScript/ Recoil/ React Query/ Styled-Components)
 
-</br>
-
-# Netflix 클론코딩입니당 구경해주세요:)
+# Netflix 클론코딩입니당 :)
  [구경하기🙄](https://react-master-green.vercel.app/)
 
 ## 🎮 주요기능
