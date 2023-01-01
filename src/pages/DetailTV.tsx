@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRef, useEffect, useState } from "react"
+import * as Styled from "./Detail"
 import { getGenre, getMovie, getPosterImg, Idata, IDetailresults, Iresults } from "../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -7,23 +7,23 @@ import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
 import IconLike from "../Image/즐겨찾기전.png"
 import IconLiked from "../Image/즐겨찾기후.png"
-import { deleteLocalStorage, deleteTVLocalStorage, saveLocalStorage, saveTVLocalStorage } from "../hooks/hook";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { likeState  } from "../state/likeState";
+import { deleteTVLocalStorage, saveTVLocalStorage } from "../hooks/hook";
+import { useRecoilState, } from "recoil";
 import { likeTVState } from "../state/likeTVState";
 import { getTV, IdetailTVresults, IresultsTV } from "../api/apiTv";
 
 interface IModalTV {
     clickTV?: IresultsTV;
+    clickPosterImg?: string;
 }
 
 // 조금 더 캐싱해보자
-function DetailTV ({clickTV: movie} : IModalTV) {
-
+function DetailTV ({clickTV: movie, clickPosterImg} : IModalTV) {
+console.log(clickPosterImg)
 const { tvId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IdetailTVresults>(["tv_detail", tvId], ()=>getTV(tvId))
-console.log('data: ', data);
+// console.log('data: ', data);
 
 // local에 저장한 찜한 콘텐츠 체크
 const [LikedArr, setLikeArr] = useRecoilState(likeTVState)
@@ -50,24 +50,24 @@ if(isLoading){
 }
 
     return(
-        <Wrap onClick={()=>{navigate('')}}>
-            <Modal onClick={(e)=>e.stopPropagation()}>
-                <MainImg bgImg={getPosterImg(data?.backdrop_path || "", "w500")}/>
-                <Title>{movie ? movie?.name : data?.name}</Title>
-                <FlexBox>
+        <Styled.Wrap onClick={()=>{navigate('')}}>
+            <Styled.Modal onClick={(e)=>e.stopPropagation()}>
+                <Styled.MainImg bgImg={clickPosterImg ? clickPosterImg : getPosterImg(data?.backdrop_path || "", "w500")}/>
+                <Styled.Title>{movie ? movie?.name : data?.name}</Styled.Title>
+                <Styled.FlexBox>
                     {/* <Release>{data?.first_air_date?.slice(0,4)}</Release> */}
-                    <Adult bgImg={data?.adult ? IconAdult : IconTeenager} />
+                    <Styled.Adult bgImg={data?.adult ? IconAdult : IconTeenager} />
                     <Season>시즌 {data?.number_of_seasons}개 </Season>
                 {/* 즐겨찾기 여부 확인 */}
                     { LikedArr.findIndex((v)=> v.id === data?.id) === -1 ? 
-                    (<Like 
+                    (<Styled.Like 
                     IconLike={IconLike} onClick={()=>{addLike(movie)}}/>) :
-                    (<Like 
+                    (<Styled.Like 
                     IconLike={IconLiked} onClick={()=>{deleteLike(movie)}}/>)
                     }
 
-                </FlexBox>
-                <FlexBox2>
+                </Styled.FlexBox>
+                <Styled.FlexBox2>
                     {data?.genres.map((genre, i) => {
                             if(getGenre.findIndex((v) => v.id === genre.id) && i < 3){
                                 return (<div key={Math.random()}>
@@ -77,89 +77,14 @@ if(isLoading){
                             } 
                         })
                     }
-                </FlexBox2>
-                <Overlay>{data?.overview}</Overlay>
-            </Modal>
-        </Wrap>
+                </Styled.FlexBox2>
+                <Styled.Overlay>{data?.overview}</Styled.Overlay>
+            </Styled.Modal>
+        </Styled.Wrap>
     )
 }
 
-const Wrap = styled.div`
-width: 100%;
-height: 200vh;
-position: absolute;
-z-index: 10;
-top: 0;
-margin: 0 auto;
-display: flex;
-justify-content: center;
-background-color: rgba(0,0,0, 0.7);
-color: #fff;
-`
-const Modal = styled.div`
-width: 850px;
-height: 80vh;
-top: 10%;
-position: fixed;
-background-color: ${props=>props.theme.black.lighter};
-border-radius: 10px;
-`
-const MainImg =styled.div<{bgImg : string}>`
-background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1)),
-                    url(${props=>props.bgImg});
-background-position: center;
-background-size: cover;
-width: 100%;
-height: 60vh;
-`
-const Title = styled.div`
-position: absolute;
-top: 46%;
-left: 60px;
-font-size: 38px;
-`
-const FlexBox = styled.div`
-display: flex;
-position: absolute;
-top: 56%;
-margin: 10px 0 0 60px;
-`
-const FlexBox2 = styled(FlexBox)`
-top: 61%;
-span {
-    margin: 0 5px 0 5px;
-}
-`
-const Adult = styled.div<{ bgImg:string }>`
-margin: 0 20px 0 10px;
-background-image: url(${props=>props.bgImg});
-background-position: center;
-background-size: cover;
-width: 20px;
-height: 20px;
-`
 const Season = styled.div``
-const Like = styled.div<{IconLike:string}>`
-background-image: url(${props=>props.IconLike});
-background-position: center;
-background-size: cover;
-width: 30px;
-height: 30px;
-margin: -8px 0 0 8px;
-cursor: pointer;
-`
-const Runtime = styled.div`
-`
-const Release = styled.div``
-const Overlay = styled.div`
-width: 92%;
-height: 112px;
-overflow: hidden;
-display: flex;
-justify-content: center;
-margin: 16px auto 0 auto;
-color: ${p=>p.theme.white.lighter};
-`
 
 
 export default DetailTV;

@@ -18,6 +18,7 @@ console.log(dataPupular);
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickMovie, setClickMovie] = useState<Iresults>()
+const clickPosterImg = getPosterImg(clickMovie?.backdrop_path || "", "w500") 
 const movieId = useMatch('movie/:movieId')
 
 
@@ -58,7 +59,7 @@ if(isLoading) {
             <SliderTOP10 data={dataTop} setClickMovie={setClickMovie} number={3}/>
 
             {/* 영화 Detail 컴포넌트(모달) */}
-            {movieId && <Detail clickMovie={clickMovie} />}
+            {movieId && <Detail clickMovie={clickMovie} clickPosterImg={clickPosterImg}/>}
 
         </Wrap>
     )

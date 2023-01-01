@@ -20,6 +20,7 @@ console.log(dataPopular);
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickTV, setClickTV] = useState<IresultsTV>()
+const clickPosterImg = getPosterImg(clickTV?.backdrop_path || "", "w500")
 
 const tvId = useMatch('tv/:tvId')
 
@@ -48,7 +49,7 @@ if(isLoading) {
             <SliderTVTOP10 data={dataTop} setClickTV={setClickTV} number={3}/>
 
             {/* TV Detail 컴포넌트(모달) */}
-            {tvId && <DetailTV clickTV={clickTV} />}
+            {tvId && <DetailTV clickTV={clickTV} clickPosterImg={clickPosterImg}/>}
 
         </Styled.Wrap>
     )

@@ -61,7 +61,7 @@ const onclickWhiteMode = () => setWhiteMode(prev => !prev)
                 <Home onClick={()=>{navigate('')}}> 홈 </Home>
                 <TV onClick={()=>{navigate('tv')}}> TV </TV>
                 <Mine onClick={()=>{navigate('mine')}}> 내가 찜한 콘텐츠 </Mine>
-                <Circle circleX={HomePage || HomeDetailPage ? 206.7 : TVPage || TVDetailPage ? 255 : 356 }/>
+                <Circle circleX={HomePage || HomeDetailPage ? -48.5 : TVPage || TVDetailPage ? -39 : -18.8 }/>
             </Nav>
                 <SearchIcon Icon={WhiteMode ? IconSearchBlack : IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
                 <SearchInput clickInput={clickInput} onChange={(e)=>{setSearch(e.target.value)}}/>
@@ -104,21 +104,21 @@ li{
     }
 }
 `
-const Home = styled.li`
-`
+const Home = styled.li``
+const TV = styled.li``
+const Mine = styled.li``
 const Circle = styled.span<{circleX:number}>`
 width: 5px;
 height: 5px;
 border-radius: 3px;
 background-color: ${props=>props.theme.red};
 /* opacity: ${props=>props.circleX === 168 ? "0" : "1"}; */
-position: fixed;
-top: 50px;
-left: ${props=>props.circleX}px;
+position: relative;
+top: 18px;
+left: ${props=>props.circleX}%;
 transition: left 0.5s;
 `
-const TV = styled.li``
-const Mine = styled.li``
+
 
 
 const SearchInput = styled.input<{clickInput:boolean}>`

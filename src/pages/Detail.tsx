@@ -13,10 +13,11 @@ import { likeState } from "../state/likeState";
 
 export interface IModal {
     clickMovie?: Iresults;
+    clickPosterImg?: string;
 }
 
 // 조금 더 캐싱해보자
-function Detail ({clickMovie: movie} : IModal) {
+function Detail ({clickMovie: movie, clickPosterImg} : IModal) {
 // console.log('movie: ', movie);
 
 const { movieId } = useParams()
@@ -24,7 +25,8 @@ const navigate = useNavigate()
 const {data, isLoading} = useQuery<IDetailresults>(["movie_detail", movieId], ()=>getMovie(movieId))
 //useQuery 이름 지어주는거 매우 중요 ["movie_detail", movieId] movieId로 개별 지정 안해주면 전에꺼 캐싱해옴
 
-const [getPost, setGetPost] = useState(getPosterImg(movie?.backdrop_path || "", "w500"))
+
+const [getPost, setGetPost] = useState(clickPosterImg || "")
 const [check, setCheck] = useState(false)
 function getPostOriginal (){
     const Caching = getPosterImg(movie?.backdrop_path || "") //고화질 이미지 불러오는 동안 기존 사진 보여주자
@@ -100,9 +102,9 @@ const deleteLike = (movie?:Iresults) => {
     )
 }
 
-const Wrap = styled.div`
+export const Wrap = styled.div`
 width: 100%;
-height: 200vh;
+height: 210vh;
 position: absolute;
 z-index: 10;
 top: 0;
@@ -112,7 +114,7 @@ justify-content: center;
 background-color: rgba(0,0,0, 0.7);
 color: #fff;
 `
-const Modal = styled.div`
+export const Modal = styled.div`
 width: 850px;
 height: 80vh;
 top: 10%;
@@ -120,7 +122,7 @@ position: fixed;
 background-color: ${props=>props.theme.black.lighter};
 border-radius: 10px;
 `
-const MainImg =styled.div<{bgImg : string}>`
+export const MainImg =styled.div<{bgImg : string}>`
 background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1)),
                     url(${props=>props.bgImg});
 background-position: center;
@@ -128,25 +130,25 @@ background-size: cover;
 width: 100%;
 height: 60vh;
 `
-const Title = styled.div`
+export const Title = styled.div`
 position: absolute;
 top: 46%;
 left: 60px;
 font-size: 38px;
 `
-const FlexBox = styled.div`
+export const FlexBox = styled.div`
 display: flex;
 position: absolute;
 top: 56%;
 margin: 10px 0 0 60px;
 `
-const FlexBox2 = styled(FlexBox)`
+export const FlexBox2 = styled(FlexBox)`
 top: 61%;
 span {
     margin: 0 5px 0 5px;
 }
 `
-const Adult = styled.div<{ bgImg:string }>`
+export const Adult = styled.div<{ bgImg:string }>`
 margin: 0 20px 0 10px;
 background-image: url(${props=>props.bgImg});
 background-position: center;
@@ -154,7 +156,7 @@ background-size: cover;
 width: 20px;
 height: 20px;
 `
-const Like = styled.div<{IconLike:string}>`
+export const Like = styled.div<{IconLike:string}>`
 background-image: url(${props=>props.IconLike});
 background-position: center;
 background-size: cover;
@@ -163,10 +165,10 @@ height: 30px;
 margin: -8px 0 0 8px;
 cursor: pointer;
 `
-const Runtime = styled.div`
+export const Runtime = styled.div`
 `
-const Release = styled.div``
-const Overlay = styled.div`
+export const Release = styled.div``
+export const Overlay = styled.div`
 width: 92%;
 height: 112px;
 overflow: hidden;
