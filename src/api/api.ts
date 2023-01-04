@@ -14,8 +14,8 @@ export function getPosterImg(poster_path: string, size?: string ) {
     return `https://image.tmdb.org/t/p/${size?size:"original"}${poster_path}`
 }
 
-export function searchMovie(search:string) {
-    return fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}`)
+export function searchMovie(search:string, page:number) {
+    return fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=${page}}&include_adult=true`) // 응 19세이상이야~
             .then((res) => res.json())
 }
 

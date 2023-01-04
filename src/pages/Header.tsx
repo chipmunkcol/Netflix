@@ -3,7 +3,7 @@ import { Navigate, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconSearch from "../Image/search.png"
 import IconSearchBlack from "../Image/searchBlack.png"
-import { throttle } from 'lodash'
+import { debounce, throttle } from 'lodash'
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { whiteMode } from "../state/whiteModeState";
 
@@ -39,8 +39,15 @@ const TVDetailPage = useMatch('tv/:tvId')
 // search 아이콘 클릭 시 input 애니메이션 
 const [clickInput, setClickInput] = useState(false)
 
-// 검색 시 query를 navi로 보냄
+// 검색 시 query를 navi로 보냄 
 const [search, setSearch] = useState("")
+const onChange = (search:string) => {
+    debounceOnChange(search)
+}
+const debounceOnChange = debounce((search:string) => { // debounce로 나름 최적화
+    setSearch(search)
+}, 400);
+
 useEffect(()=>{
     if(search) {
         navigate(`search/${search}`)
@@ -64,7 +71,7 @@ const onclickWhiteMode = () => setWhiteMode(prev => !prev)
                 <Circle circleX={HomePage || HomeDetailPage ? -48.5 : TVPage || TVDetailPage ? -39 : -18.8 }/>
             </Nav>
                 <SearchIcon Icon={WhiteMode ? IconSearchBlack : IconSearch} onClick={()=>{setClickInput(prev=>!prev)}}/>
-                <SearchInput clickInput={clickInput} onChange={(e)=>{setSearch(e.target.value)}}/>
+                <SearchInput clickInput={clickInput} onChange={(e)=>{onChange(e.target.value)}}/>
                 <DarkModeBox onClick={onclickWhiteMode}>
                     <DarkModeBtn WhiteMode={WhiteMode}/>
                 </DarkModeBox>

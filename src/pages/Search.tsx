@@ -16,10 +16,11 @@ import { likeState } from "../state/likeState";
 const Search = () => {
 
 const { search } = useParams()
-const { data, isLoading } = useQuery<Idata>(["search", search], ()=>searchMovie(search || ""))
+const { data, isLoading } = useQuery<Idata>(["search", search], ()=>searchMovie(search || "", 1))
 console.log('data: ', data);
 
 const [clickMovie, setClickMovie] = useState<Iresults>()
+const clickPosterImg = getPosterImg(clickMovie?.backdrop_path || "", "w500") 
 
 const movieId = useMatch('search/:search/:movieId')
 const navigate = useNavigate()
@@ -63,7 +64,7 @@ if(isLoading) {
             </Styled.Poster>
         )}
 
-        {movieId && <Detail clickMovie={clickMovie} />}
+        {movieId && <Detail clickMovie={clickMovie} clickPosterImg={clickPosterImg}/>}
 
         </Wrap>
     )

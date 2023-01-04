@@ -16,22 +16,21 @@ export interface IModal {
     clickPosterImg?: string;
 }
 
-// 조금 더 캐싱해보자
 function Detail ({clickMovie: movie, clickPosterImg} : IModal) {
-// console.log('movie: ', movie);
+console.log('movie: ', movie);
 
 const { movieId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IDetailresults>(["movie_detail", movieId], ()=>getMovie(movieId))
 //useQuery 이름 지어주는거 매우 중요 ["movie_detail", movieId] movieId로 개별 지정 안해주면 전에꺼 캐싱해옴
 
-
-const [getPost, setGetPost] = useState(clickPosterImg || "")
+// 조금 더 캐싱해보자
+const [getPost, setGetPost] = useState(clickPosterImg || "") // posterImg를 props로 받아서 api 요청 1회 감소(모달 켜지는시간 체감될만큼 빨라짐)
 const [check, setCheck] = useState(false)
 function getPostOriginal (){
     const Caching = getPosterImg(movie?.backdrop_path || "") //고화질 이미지 불러오는 동안 기존 사진 보여주자
     setTimeout(() => {
-        setGetPost(Caching)
+        setGetPost(Caching) // 생각한대로 작동은 하는데 뭔가 고화질 바뀌면서 렌더링 하는게 마음에 안들긴함..
     }, 1000);
 }
 
@@ -42,11 +41,13 @@ useEffect(()=>{
         setTimeout(() => {
             setGetPost(getPosterImg(data?.backdrop_path || "")); setCheck(true) 
         }, 1000);
-    } // url로 바로 들어오는거 대응
+    } // props로 캐싱했으니 url로 바로 들어오는거 대응
 },[check])
 
-// local에 저장한 찜한 콘텐츠 체크
+// local에 즐겨찾기한 콘텐츠 체크
 const [LikedArr, setLikeArr] = useRecoilState(likeState)
+
+// local에 즐겨찾기한 콘텐츠 저장 & 삭제
 const addLike = (movie?:Iresults) => {
     alert('내가 찜한 콘텐츠에 추가🎈');
     saveLocalStorage(movie);
@@ -76,6 +77,7 @@ const deleteLike = (movie?:Iresults) => {
                             {Math.trunc(data?.runtime / 60)}시간
                             { data?.runtime - Math.trunc(data?.runtime / 60)*60}분
                         </Runtime>}
+
                 {/* 즐겨찾기 여부 확인 */}
                     { LikedArr.findIndex((v)=> v.id === data?.id) === -1 ? 
                     (<Like 
@@ -129,6 +131,7 @@ background-position: center;
 background-size: cover;
 width: 100%;
 height: 60vh;
+border-radius: 10px 10px 0 0;
 `
 export const Title = styled.div`
 position: absolute;

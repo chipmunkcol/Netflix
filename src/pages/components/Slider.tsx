@@ -53,7 +53,7 @@ const openModal = (movieId:number) => {
     navigate(`movie/${movieId}`)
 }
 
-const likedArr:Iresults[] = useRecoilValue(likeState)
+const likedArr = useRecoilValue(likeState)
 
     return(
         <Wrap number={number}>

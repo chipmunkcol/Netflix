@@ -7,11 +7,11 @@
     - 영화(상영작, 인기작, top10) 페이지(OpenApi)
     - tv(상영작, 인기작, top10) 페이지(OpenApi)
     - 내가 찜한 콘텐츠 보기(LocalStorage & recoil)
-    - 검색 기능(query)
+    - 검색 기능(query & debounce & 무한스크롤 & lazyLoad)
 
 ##  🎨 Styled
     - White Mode (styled-components & recoil)
-    - 슬라이더
+    - 슬라이더 (useRef)
     - 헤더 스크롤 시 변경(eventlitener & thorttle)
     - nav 클릭 시 이동하는 공(useMacth)
     

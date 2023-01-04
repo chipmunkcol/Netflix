@@ -11,6 +11,7 @@ import { deleteTVLocalStorage, saveTVLocalStorage } from "../hooks/hook";
 import { useRecoilState, } from "recoil";
 import { likeTVState } from "../state/likeTVState";
 import { getTV, IdetailTVresults, IresultsTV } from "../api/apiTv";
+import { useEffect, useState } from "react";
 
 interface IModalTV {
     clickTV?: IresultsTV;
@@ -19,11 +20,22 @@ interface IModalTV {
 
 // 조금 더 캐싱해보자
 function DetailTV ({clickTV: movie, clickPosterImg} : IModalTV) {
-console.log(clickPosterImg)
 const { tvId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IdetailTVresults>(["tv_detail", tvId], ()=>getTV(tvId))
 // console.log('data: ', data);
+console.log(movie)
+
+const [getPost, setGetPost] = useState(clickPosterImg || "")
+const [check, setCheck] = useState(false)
+console.log('getPost: ', getPost);
+useEffect(()=>{
+    if(!movie) { 
+        setTimeout(() => {
+            setGetPost(getPosterImg(data?.backdrop_path || "")); setCheck(true) 
+        }, 1000);
+    } // url로 바로 들어오는거 대응
+},[check])
 
 // local에 저장한 찜한 콘텐츠 체크
 const [LikedArr, setLikeArr] = useRecoilState(likeTVState)
@@ -52,7 +64,7 @@ if(isLoading){
     return(
         <Styled.Wrap onClick={()=>{navigate('')}}>
             <Styled.Modal onClick={(e)=>e.stopPropagation()}>
-                <Styled.MainImg bgImg={clickPosterImg ? clickPosterImg : getPosterImg(data?.backdrop_path || "", "w500")}/>
+                <Styled.MainImg bgImg={getPost ? getPost : getPosterImg(data?.backdrop_path || "", "w500")}/>
                 <Styled.Title>{movie ? movie?.name : data?.name}</Styled.Title>
                 <Styled.FlexBox>
                     {/* <Release>{data?.first_air_date?.slice(0,4)}</Release> */}
