@@ -17,7 +17,7 @@ export interface IModal {
 }
 
 function Detail ({clickMovie: movie, clickPosterImg} : IModal) {
-console.log('movie: ', movie);
+// console.log('movie: ', movie);
 
 const { movieId } = useParams()
 const navigate = useNavigate()
@@ -106,8 +106,8 @@ const deleteLike = (movie?:Iresults) => {
 
 export const Wrap = styled.div`
 width: 100%;
-height: 210vh;
-position: absolute;
+height: 100%;
+position: fixed;
 z-index: 10;
 top: 0;
 margin: 0 auto;

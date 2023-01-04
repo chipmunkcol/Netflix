@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import * as Styled from "./Detail"
-import { getGenre, getMovie, getPosterImg, Idata, IDetailresults, Iresults } from "../api/api";
+import { getMovie, getPosterImg, Idata, IDetailresults, Iresults } from "../api/api";
+import { genresTV } from "../api/apiTv";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import IconAdult from "../Image/adult.png"
@@ -81,10 +82,10 @@ if(isLoading){
                 </Styled.FlexBox>
                 <Styled.FlexBox2>
                     {data?.genres.map((genre, i) => {
-                            if(getGenre.findIndex((v) => v.id === genre.id) && i < 3){
+                            if(genresTV.findIndex((v) => v.id === genre.id) && i < 3){
                                 return (<div key={Math.random()}>
-                                            {getGenre[getGenre.findIndex((v) => v.id === genre.id)]?.name} 
-                                            {i !== data?.genres.length-1 && <span>&#183;</span>}
+                                            {genresTV[genresTV.findIndex((v) => v.id === genre.id)]?.name} 
+                                            {(i !== data?.genres.length-1 && i !== 2) && <span>&#183;</span>}
                                         </div>)
                             } 
                         })

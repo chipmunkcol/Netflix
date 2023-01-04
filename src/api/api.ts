@@ -15,7 +15,7 @@ export function getPosterImg(poster_path: string, size?: string ) {
 }
 
 export function searchMovie(search:string, page:number) {
-    return fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=${page}}&include_adult=true`) // 응 19세이상이야~
+    return fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=${page}&include_adult=true`) // 응 19세이상이야~
             .then((res) => res.json())
 }
 
@@ -45,12 +45,10 @@ export interface Iresults {
 }
 
 export interface Idata {
-    dates: {
-        "maximum": string;
-        "minimum": string;
-        },
-        "page": number;
-        "results": Iresults[];
+    "page": number;
+    "results": Iresults[];
+    "total_pages": number;
+    "total_results": number;
 }
 
 export interface IDetailresults {

@@ -15,7 +15,7 @@ function TV () {
 const { data, isLoading } = useQuery<IdataTV>(["on_the_air"], getTVs)
 const { data: dataPopular } = useQuery<IdataTV>(["popularTV"], getPopularTV)
 const { data: dataTop } = useQuery<IdataTV>(["TopTV"], getTOP10TV)
-console.log(dataPopular);
+// console.log(dataPopular);
 
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달

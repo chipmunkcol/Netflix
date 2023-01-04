@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
       <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         
@@ -22,6 +22,6 @@ root.render(
 
       </QueryClientProvider>
       </RecoilRoot>
-  </React.StrictMode>  
+  // </React.StrictMode>  
 );
 

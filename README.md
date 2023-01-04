@@ -7,7 +7,9 @@
     - 영화(상영작, 인기작, top10) 페이지(OpenApi)
     - tv(상영작, 인기작, top10) 페이지(OpenApi)
     - 내가 찜한 콘텐츠 보기(LocalStorage & recoil)
-    - 검색 기능(query & debounce & 무한스크롤 & lazyLoad)
+    - 검색 기능(query & debounce)
+        => 무한스크롤(useInview) 
+        => lazyLoad(IntersectionObserver)
 
 ##  🎨 Styled
     - White Mode (styled-components & recoil)

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { getPosterImg } from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import { getGenre } from "../../api/api";
+import { genresTV } from "../../api/apiTv";
 import IconLike from "../../Image/즐겨찾기전.png"
 import IconLiked from "../../Image/즐겨찾기후.png"
 import SliderBtn from "./SliderBtn";
@@ -72,10 +72,11 @@ const likedArr:IresultsTV[] = useRecoilValue(likeTVState)
                         </FlexBox>
                         <PosterGenre>
                             {movie.genre_ids.map((genre, i) => {
-                                    if(getGenre.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
+                                    if(genresTV.findIndex((v) => v.id === genre) && i < 3){ // 장르 3개까지만 보여주자 & 마지막 장르는 . 제거
                                         return (<div key={Math.random()}>
-                                                    {getGenre[getGenre.findIndex((v) => v.id === genre)]?.name} 
-                                                    {i !== movie.genre_ids.length-1 && <span>&#183;</span>} 
+                                                    {genresTV[genresTV.findIndex((v) => v.id === genre)]?.name} 
+                                                    {(i !== movie.genre_ids.length-1 && i !== 2) 
+                                                        && <span>&#183;</span> } 
                                                 </div>)
                                     } 
                                 })
