@@ -93,20 +93,25 @@ flex-direction: column;
 justify-content: center;
 gap: 20px;
 color: #fff;
+transition: 1s;
 `
 export const Title = styled.div`
 font-size: 64px;
 margin-left: 4%;
-margin-top: -157px;
-width: 53vw;
+margin-top: 6px;
+width: 56vw;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 `
 export const Overview = styled.div`
-font-size: 24px;
+font-size: 19px;
 margin-left: 4%;
 margin-top: 10px;
-width: 46vw;
+width: 41vw;
 line-height: normal;
-height: 14vh;
+height: 25vh;
+overflow: hidden;
 `
 export const STitle = styled.div`
 font-size: 24px;
