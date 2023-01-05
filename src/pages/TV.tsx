@@ -8,6 +8,7 @@ import { getPosterImg } from "../api/api";
 import SliderTV from "./components/SliderTV";
 import DetailTV from "./DetailTV";
 import SliderTVTOP10 from "./components/SliderTVTOP10";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 
 function TV () {
@@ -20,7 +21,7 @@ const { data: dataTop } = useQuery<IdataTV>(["TopTV"], getTOP10TV)
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickTV, setClickTV] = useState<IresultsTV>()
-const clickPosterImg = getPosterImg(clickTV?.backdrop_path || "", "w500")
+const clickPosterImg = getPosterImg(clickTV?.backdrop_path || "", "w200")
 
 const tvId = useMatch('tv/:tvId')
 
@@ -29,11 +30,18 @@ if(isLoading) {
 }
     return(
         <Styled.Wrap > 
-            <Styled.Banner bgImage={getPosterImg(data?.results[2].backdrop_path || "")}>
-                <Styled.Title>{data?.results[2].name}</Styled.Title>
-                <Styled.Overview>{data?.results[2].overview}</Styled.Overview>
+            <ProgressiveImage src={getPosterImg(data?.results[0].backdrop_path || "")} placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}>
+                {(src, loading) =>(
+                    <Styled.Banner
+                    bgImage={src}
+                    >
+                    <Styled.Title>{data?.results[0].name}</Styled.Title>
+                    <Styled.Overview>{data?.results[0].overview}</Styled.Overview>
+                    
+                    </Styled.Banner>
+                    )}
 
-            </Styled.Banner>
+            </ProgressiveImage>
 
             <Styled.STitle>현재 상영중인 드라마</Styled.STitle>
             {/* 슬라이더 number로 position top 조절해줌 */}

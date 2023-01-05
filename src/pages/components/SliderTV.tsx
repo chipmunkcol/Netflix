@@ -59,7 +59,7 @@ const likedArr:Iresults[] = useRecoilValue(likeState)
             {data?.results.slice(2,data.results.length).map(movie => 
                 <Poster key={movie.id}>
                     <PosterImg 
-                    bgImage={getPosterImg(movie.backdrop_path || "", "w500")} 
+                    bgImage={getPosterImg(movie.backdrop_path || "", "w200")} 
                     onClick={()=>{openModal(movie.id); setClickTV(movie);}}
                     />
                     <PosterTitle>{movie.name}</PosterTitle>

@@ -2,19 +2,19 @@ const API_KEY = "a96ecb105f0214953ccc67ed2055f725"
 const BASE_URL = "https://api.themoviedb.org/3"
 
 export function getTVs(){
-    return fetch(`${BASE_URL}/tv/on_the_air?api_key=${API_KEY}&language=KR&region=KR`)
+    return fetch(`${BASE_URL}/tv/on_the_air?api_key=${API_KEY}&language=ko&page=${Math.floor(Math.random()*5)+1}`)
             .then((res)=>res.json())
 }
 export function getTV(tvId?: string){
-    return fetch(`${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=KR`)
+    return fetch(`${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=ko`)
             .then((res) => res.json())
 }
 export function getPopularTV(){
-    return fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=KR&page=2`)
+    return fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=ko&page=1`)
             .then((res) => res.json()) 
 }
 export function getTOP10TV(){
-    return fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=KR&page=1`)
+    return fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=ko&page=1`)
             .then((res) => res.json())
 }
 

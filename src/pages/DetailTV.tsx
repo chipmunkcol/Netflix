@@ -13,6 +13,7 @@ import { useRecoilState, } from "recoil";
 import { likeTVState } from "../state/likeTVState";
 import { getTV, IdetailTVresults, IresultsTV } from "../api/apiTv";
 import { useEffect, useState } from "react";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 interface IModalTV {
     clickTV?: IresultsTV;
@@ -65,7 +66,15 @@ if(isLoading){
     return(
         <Styled.Wrap onClick={()=>{navigate('')}}>
             <Styled.Modal onClick={(e)=>e.stopPropagation()}>
-                <Styled.MainImg bgImg={getPost ? getPost : getPosterImg(data?.backdrop_path || "", "w500")}/>
+                <ProgressiveImage src={getPosterImg(data?.backdrop_path || "")} placeholder={clickPosterImg}>
+                        {(src, loading) =>(
+                            <Styled.MainImg 
+                            bgImg={src}
+                            // alt={data?.title + "메인 이미지입니다~"}
+                            />
+                        )}
+                </ProgressiveImage>
+
                 <Styled.Title>{movie ? movie?.name : data?.name}</Styled.Title>
                 <Styled.FlexBox>
                     {/* <Release>{data?.first_air_date?.slice(0,4)}</Release> */}

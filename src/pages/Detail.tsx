@@ -10,6 +10,7 @@ import IconLiked from "../Image/즐겨찾기후.png"
 import { deleteLocalStorage, saveLocalStorage } from "../hooks/hook";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { likeState } from "../state/likeState";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 export interface IModal {
     clickMovie?: Iresults;
@@ -23,27 +24,6 @@ const { movieId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IDetailresults>(["movie_detail", movieId], ()=>getMovie(movieId))
 //useQuery 이름 지어주는거 매우 중요 ["movie_detail", movieId] movieId로 개별 지정 안해주면 전에꺼 캐싱해옴
-
-// 조금 더 캐싱해보자
-const [getPost, setGetPost] = useState(clickPosterImg || "") // posterImg를 props로 받아서 api 요청 1회 감소(모달 켜지는시간 체감될만큼 빨라짐)
-const [check, setCheck] = useState(false)
-function getPostOriginal (){
-    const 고화질이미지 = getPosterImg(movie?.backdrop_path || "") //고화질 이미지 불러오는 동안 기존 사진 보여주자
-    setTimeout(() => {
-        setGetPost(고화질이미지) 
-    }, 1000);
-}
-// 생각한대로 작동은 하는데 뭔가 고화질 바뀌면서 렌더링 하는게 마음에 안들긴함 lazyLoad도 안통하고 뭔가 css 효과로 해결방법 있을거같은데..
-
-useEffect(()=>{
-    if(movie) { 
-        getPostOriginal() 
-    } else { 
-        setTimeout(() => {
-            setGetPost(getPosterImg(data?.backdrop_path || "")); setCheck(true) 
-        }, 1000);
-    } // props로 캐싱했으니 url로 바로 들어오는거 대응
-},[check])
 
 // local에 즐겨찾기한 콘텐츠 체크
 const [LikedArr, setLikeArr] = useRecoilState(likeState)
@@ -68,7 +48,17 @@ const deleteLike = (movie?:Iresults) => {
     return(
         <Wrap onClick={()=>{navigate('')}}>
             <Modal onClick={(e)=>e.stopPropagation()}>
-                <MainImg bgImg={getPost}/>
+
+                <ProgressiveImage src={getPosterImg(data?.backdrop_path || "")} placeholder={clickPosterImg}>
+                    {(src, loading) =>(
+                        <MainImg 
+                        bgImg={src}
+                        // alt={data?.title + "메인 이미지입니다~"}
+                        />
+                    )}
+
+                </ProgressiveImage>
+
                 <Title>{movie ? movie?.title : data?.title}</Title>
                 <FlexBox>
                     <Release>{data?.release_date?.slice(0,4)}</Release>
@@ -135,6 +125,7 @@ height: 60vh;
 border-radius: 10px 10px 0 0;
 /* transition: 1s; */
 `
+
 export const Title = styled.div`
 position: absolute;
 top: 46%;

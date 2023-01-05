@@ -6,6 +6,7 @@ import Detail from "./Detail";
 import Slider from "./components/Slider";
 import { useMatch } from "react-router-dom";
 import SliderTOP10 from "./components/SliderTOP10";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 
 function Home () {
@@ -39,11 +40,24 @@ if(isLoading) {
 }
     return(
         <Wrap > 
-            <Banner bgImage={getPosterImg(data?.results[0].backdrop_path || "")}>
-                <Title>{data?.results[0].title}</Title>
-                <Overview>{data?.results[0].overview}</Overview>
+            {/* <Banner bgImage={getPosterImg(data?.results[0].backdrop_path || "")}> */}
+            <ProgressiveImage src={getPosterImg(data?.results[0].backdrop_path || "")} placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}>
+                    {(src, loading) =>(
+                        <Banner
+                        bgImage={src}
+                        // alt={data?.title + "메인 이미지입니다~"}
+                        >
+                        <Title>{data?.results[0].title}</Title>
+                        <Overview>{data?.results[0].overview}</Overview>
+                        
+                        </Banner>
+                    )}
 
-            </Banner>
+            </ProgressiveImage>
+            
+                
+
+            {/* </Banner> */}
 
             <STitle>현재 상영중인 영화</STitle>
             {/* 슬라이더 number로 position top 조절해줌 */}
