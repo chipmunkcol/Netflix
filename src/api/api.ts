@@ -2,7 +2,7 @@ const API_KEY = "a96ecb105f0214953ccc67ed2055f725"
 const BASE_URL = "https://api.themoviedb.org/3"
 
 export function getMovies() { 
-    return fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko&page=${Math.floor(Math.random()*5)+1}`)
+    return fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko&page=${Math.floor(Math.random()*10)+1}`)
             .then((res) => res.json())
 }
 export function getMovie(movie_id?: string) {
