@@ -3,9 +3,6 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { getPosterImg, Idata, Iresults } from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import { getGenre } from "../../api/api";
-import IconAdult from "../../Image/adult.png"
-import IconTeenager from "../../Image/teenager.png"
 import IconLike from "../../Image/즐겨찾기전.png"
 import IconLiked from "../../Image/즐겨찾기후.png"
 import SliderBtn from "./SliderBtn";

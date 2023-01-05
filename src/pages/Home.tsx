@@ -13,7 +13,7 @@ function Home () {
 const { data, isLoading } = useQuery<Idata>(["now_playing"], getMovies)
 const { data: dataPupular } = useQuery<Idata>(["popularMovie"], getPopularMovie)
 const { data: dataTop } = useQuery<Idata>(["TopMovie"], getTopMovie)
-console.log(dataPupular);
+console.log(data);
 
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달

@@ -20,7 +20,7 @@ const Search = () => {
 
 const { search } = useParams()
 const [data, setData] = useState<Iresults[]>([])
-// console.log('data: ', data);
+console.log('data: ', data);
 
 // 무한스크롤
 const [ref, inView] = useInView()
@@ -31,7 +31,7 @@ console.log('page: ', page);
 
 const getSearchData = useCallback(async () => {
     setLoading(true);
-    const getData:Idata = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=${page}`)
+    const getData:Idata = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=${page}&include_adult=true`)
                         .then((res) => res.json())
     setData(prev => [...prev, ...getData.results])
     setTimeout(() => {
@@ -41,7 +41,7 @@ const getSearchData = useCallback(async () => {
 
 const getSearchData2 = useCallback(async() => { // 검색할때는 다시 data 초기화 해야됨
     setPage(1)
-    const getData:Idata = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=1`)
+    const getData:Idata = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&query=${search}&page=1&include_adult=true`)
     .then((res) => res.json())
     setData(getData.results) 
     setLastPage(getData.total_pages)
@@ -88,7 +88,7 @@ const likedArr = useRecoilValue(likeState)
                 movieId={movie.id}
                 movie={movie}
                 />
-                <Styled.PosterTitle>{movie.title}</Styled.PosterTitle>
+                <PosterTitle>{movie.title}</PosterTitle>
                 
                 <Styled.OpacityBox>
                     <Styled.FlexBox>
@@ -127,10 +127,11 @@ width: 100%;
 position: absolute;
 top: 11%;
 `
-
-const InfinityScroll = styled.div`
-
+const PosterTitle = styled.div`
+position: relative;
+left: 9px;
 `
+const InfinityScroll = styled.div``
 
 
 export default Search;
