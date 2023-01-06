@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { getMovies, getPopularMovie, getPosterImg, getTopMovie, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
 import Slider from "./components/Slider";
-import { useMatch } from "react-router-dom";
+import { Outlet, useMatch, useNavigate } from "react-router-dom";
 import SliderTOP10 from "./components/SliderTOP10";
 import ProgressiveImage from "react-progressive-graceful-image";
 
@@ -22,11 +22,11 @@ console.log(data);
 //     page = Math.floor(Math.random()*10)+1
 // },[Imutablity])
 
+
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickMovie, setClickMovie] = useState<Iresults>()
 const clickPosterImg = getPosterImg(clickMovie?.backdrop_path || "", "w500") 
 const movieId = useMatch('movie/:movieId')
-
 
 // 내가 찜한 콘텐츠 로컬에 저장하자. (호출 함수 경로 ./hooks/hook)]
 useEffect(()=>{
@@ -46,7 +46,10 @@ if(isLoading) {
     return(
         <Wrap > 
             {/* <Banner bgImage={getPosterImg(data?.results[0].backdrop_path || "")}> */}
-            <ProgressiveImage src={getPosterImg(data?.results[0].backdrop_path || "")} placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}>
+            <ProgressiveImage 
+            src={getPosterImg(data?.results[0].backdrop_path || "")} 
+            placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}
+            >
                     {(src, loading) =>(
                         <Banner
                         bgImage={src}
@@ -78,7 +81,7 @@ if(isLoading) {
             <SliderTOP10 data={dataTop} setClickMovie={setClickMovie} number={3}/>
 
             {/* 영화 Detail 컴포넌트(모달) */}
-            {movieId && <Detail clickMovie={clickMovie} clickPosterImg={clickPosterImg}/>}
+            <Outlet context={{clickMovie: clickMovie, clickPosterImg: clickPosterImg}}/>
 
         </Wrap>
     )

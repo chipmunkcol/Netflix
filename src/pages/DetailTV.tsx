@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as Styled from "./Detail"
 import { getMovie, getPosterImg, Idata, IDetailresults, Iresults } from "../api/api";
 import { genresTV } from "../api/apiTv";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
@@ -21,7 +21,8 @@ interface IModalTV {
 }
 
 // 조금 더 캐싱해보자
-function DetailTV ({clickTV: movie, clickPosterImg} : IModalTV) {
+function DetailTV () {
+const {clickTV: movie, clickPosterImg} = useOutletContext<IModalTV>()
 const { tvId } = useParams()
 const navigate = useNavigate()
 const {data, isLoading} = useQuery<IdetailTVresults>(["tv_detail", tvId], ()=>getTV(tvId))
@@ -64,7 +65,7 @@ if(isLoading){
 }
 
     return(
-        <Styled.Wrap onClick={()=>{navigate('')}}>
+        <Styled.Wrap onClick={()=>{navigate(-1)}}>
             <Styled.Modal onClick={(e)=>e.stopPropagation()}>
                 <ProgressiveImage src={getPosterImg(data?.backdrop_path || "")} placeholder={clickPosterImg}>
                         {(src, loading) =>(

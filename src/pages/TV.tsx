@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState, } from "react";
 import styled from "styled-components";
 import * as Styled from "./Home"
-import { useMatch } from "react-router-dom";
+import { Outlet, useMatch } from "react-router-dom";
 import { getPopularTV, getTOP10TV, getTVs, IdataTV, IresultsTV } from "../api/apiTv";
 import { getPosterImg } from "../api/api";
 import SliderTV from "./components/SliderTV";
@@ -56,7 +56,7 @@ if(isLoading) {
             <SliderTVTOP10 data={dataTop} setClickTV={setClickTV} number={3}/>
 
             {/* TV Detail 컴포넌트(모달) */}
-            {tvId && <DetailTV clickTV={clickTV} clickPosterImg={clickPosterImg}/>}
+            <Outlet context={{clickTV: clickTV, clickPosterImg: clickPosterImg}}/>
 
         </Styled.Wrap>
     )

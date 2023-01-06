@@ -1,4 +1,4 @@
-import { useMatch,  } from "react-router-dom"
+import { Outlet, useMatch,  } from "react-router-dom"
 import { useState } from "react"
 
 import styled from "styled-components";
@@ -46,8 +46,8 @@ if(!data) {
 
             </Grid2>
 
-            {movieId ? <Detail clickMovie={clickMovie} /> : 
-                tvId ? <DetailTV clickTV={clickTV}/> : null}
+            {/* movie tv detail페이지 */}
+            <Outlet context={{clickMovie: clickMovie, clickTV: clickTV}}/>
 
         </Wrap>
     )

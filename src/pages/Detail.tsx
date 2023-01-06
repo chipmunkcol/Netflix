@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useRef, useEffect, useState } from "react"
 import { getGenre, getMovie, getPosterImg, Idata, IDetailresults, Iresults } from "../api/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useMatch, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import IconAdult from "../Image/adult.png"
 import IconTeenager from "../Image/teenager.png"
@@ -11,14 +11,15 @@ import { deleteLocalStorage, saveLocalStorage } from "../hooks/hook";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { likeState } from "../state/likeState";
 import ProgressiveImage from "react-progressive-graceful-image";
+import { Navigate } from "react-router-dom";
 
 export interface IModal {
     clickMovie?: Iresults;
     clickPosterImg?: string;
 }
 
-function Detail ({clickMovie: movie, clickPosterImg} : IModal) {
-// console.log('movie: ', movie);
+function Detail () {
+const {clickMovie: movie, clickPosterImg} = useOutletContext<IModal>()
 
 const { movieId } = useParams()
 const navigate = useNavigate()
@@ -43,10 +44,14 @@ const deleteLike = (movie?:Iresults) => {
     copy.splice(index, 1)
     setLikeArr(copy)  
 }
+const a = useLocation()
+console.log('a: ', a);
 
+const navigateGoback = () => {
 
+}
     return(
-        <Wrap onClick={()=>{navigate('')}}>
+        <Wrap onClick={()=>{navigate(-1)}}>
             <Modal onClick={(e)=>e.stopPropagation()}>
 
                 <ProgressiveImage src={getPosterImg(data?.backdrop_path || "")} placeholder={clickPosterImg}>

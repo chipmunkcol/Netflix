@@ -1,4 +1,4 @@
-import { useMatch, useNavigate, useParams } from "react-router-dom"
+import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom"
 import { useCallback, useEffect, useState } from "react"
 import { getGenre, getPosterImg, Idata, Iresults } from "../api/api";
 import IconAdult from "../Image/adult.png"
@@ -113,7 +113,8 @@ const likedArr = useRecoilValue(likeState)
 
         <InfinityScroll ref={ref}></InfinityScroll> 
 
-        {movieId && <Detail clickMovie={clickMovie} clickPosterImg={clickPosterImg}/>}
+        {/* search Detail페이지 */}
+        <Outlet context={{clickMovie: clickMovie, clickPosterImg: clickPosterImg}}/>
 
         </Wrap>
     )
