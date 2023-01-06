@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, } from "react";
+import { useMemo, useState, } from "react";
 import styled from "styled-components";
 import * as Styled from "./Home"
 import { useMatch } from "react-router-dom";
@@ -13,11 +13,10 @@ import ProgressiveImage from "react-progressive-graceful-image";
 
 function TV () {
 
-const { data, isLoading } = useQuery<IdataTV>(["on_the_air"], getTVs)
+const { data, isLoading } = useQuery<IdataTV>(["on_the_air"], ()=>getTVs(2))
 const { data: dataPopular } = useQuery<IdataTV>(["popularTV"], getPopularTV)
 const { data: dataTop } = useQuery<IdataTV>(["TopTV"], getTOP10TV)
-// console.log(dataPopular);
-
+// console.log(dataPopular); 
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickTV, setClickTV] = useState<IresultsTV>()

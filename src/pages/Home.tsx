@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { getMovies, getPopularMovie, getPosterImg, getTopMovie, Idata, Iresults } from "../api/api";
 import Detail from "./Detail";
@@ -11,11 +11,16 @@ import ProgressiveImage from "react-progressive-graceful-image";
 
 function Home () {
     
-const { data, isLoading } = useQuery<Idata>(["now_playing"], getMovies)
+const { data, isLoading } = useQuery<Idata>(["now_playing"], ()=> getMovies(1))
 const { data: dataPupular } = useQuery<Idata>(["popularMovie"], getPopularMovie)
 const { data: dataTop } = useQuery<Idata>(["TopMovie"], getTopMovie)
 console.log(data);
 
+// let page:number;
+// const Imutablity = false;
+// useEffect(()=>{
+//     page = Math.floor(Math.random()*10)+1
+// },[Imutablity])
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickMovie, setClickMovie] = useState<Iresults>()
