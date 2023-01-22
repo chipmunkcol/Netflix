@@ -8,8 +8,8 @@ import IconLiked from "../../Image/즐겨찾기후.png"
 import SliderBtn from "./SliderBtn";
 import { saveLocalStorage } from "../../hooks/hook";
 import { useRecoilValue } from "recoil";
-import { likeState } from "../../state/likeState";
 import { genresTV, IdataTV, IresultsTV } from "../../api/apiTv";
+import { likeTVState } from "../../state/likeTVState";
 
 interface ISliderTV {
     data?: IdataTV;
@@ -51,7 +51,7 @@ const openModal = (tvId:number) => {
     navigate(`${tvId}`)
 }
 
-const likedArr:Iresults[] = useRecoilValue(likeState)
+const likedArr = useRecoilValue(likeTVState)
 
     return(
         <Wrap number={number}>

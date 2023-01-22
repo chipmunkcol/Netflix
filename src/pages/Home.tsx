@@ -11,21 +11,15 @@ import ProgressiveImage from "react-progressive-graceful-image";
 
 function Home () {
     
-const { data, isLoading } = useQuery<Idata>(["now_playing"], ()=> getMovies(1))
+const { data, isLoading } = useQuery<Idata>(["now_playing"], ()=> getMovies(2))
 const { data: dataPupular } = useQuery<Idata>(["popularMovie"], getPopularMovie)
 const { data: dataTop } = useQuery<Idata>(["TopMovie"], getTopMovie)
 console.log(data);
 
-// let page:number;
-// const Imutablity = false;
-// useEffect(()=>{
-//     page = Math.floor(Math.random()*10)+1
-// },[Imutablity])
-
 
 // Click한 영화를 slider와 모달 컴포넌트에 전달
 const [clickMovie, setClickMovie] = useState<Iresults>()
-const clickPosterImg = getPosterImg(clickMovie?.backdrop_path || "", "w500") 
+const clickPosterImg = getPosterImg(clickMovie?.backdrop_path || "", "w200") 
 const movieId = useMatch('movie/:movieId')
 
 // 내가 찜한 콘텐츠 로컬에 저장하자. (호출 함수 경로 ./hooks/hook)]
@@ -44,8 +38,7 @@ if(isLoading) {
     return <>Loading</>
 }
     return(
-        <Wrap > 
-            {/* <Banner bgImage={getPosterImg(data?.results[0].backdrop_path || "")}> */}
+        <Wrap >
             <ProgressiveImage 
             src={getPosterImg(data?.results[0].backdrop_path || "")} 
             placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}

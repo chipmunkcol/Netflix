@@ -53,6 +53,7 @@ const openModal = (movieId:number) => {
     navigate(`movie/${movieId}`)
 }
 
+// 즐겨찾기 한거 표시!
 const likedArr = useRecoilValue(likeState)
 
     return(

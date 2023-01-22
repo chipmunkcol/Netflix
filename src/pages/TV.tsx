@@ -29,7 +29,9 @@ if(isLoading) {
 }
     return(
         <Styled.Wrap > 
-            <ProgressiveImage src={getPosterImg(data?.results[0].backdrop_path || "")} placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}>
+            <ProgressiveImage 
+            src={getPosterImg(data?.results[0].backdrop_path || "")} 
+            placeholder={getPosterImg(data?.results[0].backdrop_path || "", "w200")}>
                 {(src, loading) =>(
                     <Styled.Banner
                     bgImage={src}
