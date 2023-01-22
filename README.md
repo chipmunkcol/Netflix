@@ -61,9 +61,9 @@ setGetPost(getPosterImg(data?.backdrop_path || "")); setCheck(true)
 <details>
 
 <summary>③react-progressive-graceful-image 라이브러리(성공!)</summary>
-    킹-갓 [react-progressive-graceful-image] 라이브러리로 해결봤음 라이브러리 안쓰고 해볼라했는데 typeScript실력 이슈로 실패함 이미지 로딩 중에는 저화질 이미지 보여주고 자연스럽게 고화질이 보여짐!
-    기존 슬라이더 이미지를 w500 정도 화질로 보여주다가 w200 으로 바꾸고 필요할때만 화질을 올리려고 progressiveImage 조금씩 넣어주니까 페이지 속도가 말도 안되게 올라갔다
-    이미지가 속도에 영향주는건 알고있었는데 직접 체감해보니까 상당히 좋았음!
+    [react-progressive-graceful-image] 라이브러리로 해결! 라이브러리 안쓰고 해보려했는데 typeScript실력 이슈로 실패함 이미지 로딩 중에는 저화질 이미지 보여주고 자연스럽게 고화질이 보여짐bb
+    기존엔 슬라이더 이미지를 w500 정도 화질로 보여주다가 w200 으로 바꾸고 필요할때만 화질을 올리려고 progressiveImage 조금씩 넣어주니까 페이지 속도가 말도 안되게 올라갔다
+    이미지가 속도에 영향주는건 알고있었는데 직접 체감해보니까 상당히 좋았음😀
 </details>
 
 </br>
